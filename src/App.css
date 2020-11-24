@@ -51,10 +51,35 @@
 .paper {
   padding: 2;
   text-align: "center";
-  align-content: 'space-around';
+  align-content: "space-around";
   color: wheat;
 }
 
 .input {
   flex-grow: 1;
 }
+
+.Q-Body {
+  height: 100vh;
+  background-color: #6bd3f3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.QPlacement {
+  height: auto;
+  width: auto;
+}
+
+/* .Btest.sizeLarge {
+
+}
+} */
+
+/* .QContainer {
+  height: auto;
+} */
