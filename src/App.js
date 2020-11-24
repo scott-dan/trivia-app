@@ -24,23 +24,19 @@ class App extends Component {
     }
 
     updateSlider = (event, newSlider) => {
-      console.log(newSlider);
       this.setState({ slider: newSlider });
     };
 
-    updateCategory = (event, newCategory) =>  {
-      console.log(this.newCategory);
-      this.setState({ category: newCategory });
+    updateCategory = (event) =>  {
+      this.setState({ category: event.target.value });
     };
 
-    updateDifficulty = (event, newDifficulty) => {
-      console.log(this.newDifficulty);
-      this.setState({ difficulty: newDifficulty });
+    updateDifficulty = (event) => {
+      this.setState({ difficulty: event.target.value });
     };
 
-    updateQuestionType = (event, newQuestionType) =>  {
-      console.log(this.newQuestionType);
-      this.setState({ questionType: newQuestionType });
+    updateQuestionType = (event) =>  {
+      this.setState({ questionType: event.target.value });
     };
   
     render() {
