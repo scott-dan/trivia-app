@@ -1,15 +1,13 @@
 import React, {Component} from "react";
-import { makeStyles } from '@material-ui/core/styles';
+import { createMuiTheme, makeStyles } from '@material-ui/core/styles';
+import { deepOrange, purple } from '@material-ui/core/colors';
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
-// import Select from "@material-ui/core/Select";
-// import Slider from "@material-ui/core/Slider";
 import InputLabel from "@material-ui/core/InputLabel";
-// import FormLabel from "@material-ui/core/FormLabel";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
+// import { TextareaAutosize } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -19,23 +17,31 @@ const useStyles = makeStyles((theme) => ({
     },
     paper: {
         padding: theme.spacing(1),
-        height: 50,
         textAlign: 'center',
         color: theme.palette.text.secondary,
-        whiteSpace: 'nowrap',
         marginBottom: theme.spacing(1),
     },
     divider: {
         margin: theme.spacing(2, 0),
     },
+    Button: {
+        color: theme.palette.getContrastText(purple[500]),
+        margin: 'auto',
+        padding: '10px',
+        maxWidth: '600px',
+        minWidth: '400px',
+        maxHeight: '100px',
+        minHeight: '100px',
+        backgroundColor: '#facd78',
+        '&:hover': {
+            backgroundColor: deepOrange[300],
+        }
+    },
+    QPlacement: {
+        padding: '35px',
+    }
 }));
 
-// class Questions extends Component {
-    // constructor(props) {
-    //     super(props);
-    //   }
-
-    // render(){
 export default function Questions() {
     const classes = useStyles();
         return(
@@ -47,57 +53,85 @@ export default function Questions() {
                     alt="logo"
                 /> */}
                 </header>
-                <body className="App-body">
-                <Container maxWidth="sm">
-                    <Box my={3}>
-                    <Typography variant="h5" component="h1" gutterBottom>
-                       QUESTION: Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-                       sed do  tempor incididunt ut labore et dolore magna aliqua? 
-                    </Typography>
-                    </Box>
+                <body className="Q-Body">
+                    <Container className="QContainer" maxWidth="md">
+                        <Grid container spacing={3}>
+
+                            <Grid item xs={12}>
+                                <Paper className={classes.QPlacement}>
+                                    <div className="QuestionArea">
+                                    <Typography variant="h5" component="div" >
+                                    QUESTION: Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+                                    sed do  tempor incididunt ut labore et dolore magna aliqua? 
+                                    </Typography>
+                                    </div>
+                                </Paper>
+                            </Grid>
+
+                            <Grid item xs={6}>
+                                <Button
+                                className={classes.Button}
+                                variant="contained"
+                                >
+                                {/* // color="primary"
+                                //onClick={() => (window.location.href = "questions.html")} */}
+                                <div className="Answer1">
+                                <InputLabel htmlFor="grouped-native-select">
+                                A. PLACEHOLDER FOR AN ANSWER
+                                </InputLabel>
+
+                                </div>
+                                </Button>
+                            </Grid>
+
+                            <Grid item xs={6}>
+                                <Button
+                                className={classes.Button}
+                                variant="contained"
+                                // color="primary"
+                                //onClick={() => (window.location.href = "questions.html")}
+                                >
+                                <div className="Answer2">
+                                <InputLabel htmlFor="grouped-native-select">
+                                A. PLACEHOLDER FOR AN ANSWER
+                                </InputLabel>
+
+                                </div>
+                                </Button>
+                            </Grid>
+
+                            <Grid item xs={6}>
+                                <Button
+                                className={classes.Button}
+                                variant="contained"
+                                // color="primary"
+                                //onClick={() => (window.location.href = "questions.html")}
+                                >
+                                <div className="Answer3">
+                                <InputLabel htmlFor="grouped-native-select">
+                                A. PLACEHOLDER FOR AN ANSWER
+                                </InputLabel>
+
+                                </div>
+                                </Button>
+                            </Grid>
+
+                            <Grid item xs={6}>
+                                <Button
+                                className={classes.Button}
+                                variant="contained"
+                                // color="primary"
+                                //onClick={() => (window.location.href = "questions.html")}
+                                >
+                                <div className="Answer4">
+                                <InputLabel htmlFor="grouped-native-select">
+                                A. PLACEHOLDER FOR AN ANSWER
+                                </InputLabel>
+                                </div>
+                                </Button>
+                            </Grid>
+                        </Grid>
                 </Container>
-                <div className='input'>
-                <Grid container spacing={3}
-                    alignItems="center">
-                    <Grid item xs={6}>
-                        <Paper className={classes.paper}>
-                        <InputLabel htmlFor="grouped-native-select">
-                        A. ANSWER CHOICE HERE
-                        </InputLabel>
-                    </Paper>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Paper className={classes.paper}>
-                        <InputLabel htmlFor="grouped-native-select">
-                        B. ANSWER CHOICE HERE
-                        </InputLabel>
-                    </Paper>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Paper className={classes.paper}>
-                        <InputLabel htmlFor="grouped-native-select">
-                        C. ANSWER CHOICE HERE
-                        </InputLabel>
-                    </Paper>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Paper className={classes.paper}>
-                        <InputLabel htmlFor="grouped-native-select">
-                        D. ANSWER CHOICE HERE
-                        </InputLabel>
-                    </Paper>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() => (window.location.href = "questions.html")}
-                        >
-                        Submit Answer!
-                        </Button>
-                    </Grid>
-                </Grid>
-                </div>
             </body>
             </div>
         );

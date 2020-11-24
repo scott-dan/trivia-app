@@ -9,6 +9,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import FormLabel from "@material-ui/core/FormLabel";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
+import Questions from "./questions";
 
 class Main extends Component {
     constructor(props) {
@@ -17,10 +18,23 @@ class Main extends Component {
           slider: 0,
           category: "any",
           difficulty: "easy",
-          questionType: "any"
+          questionType: "any",
+        //   condition: false 
         };
+        // this.ToQuestion = this.ToQuestion.bind(this);
       }
+    // ToQuestion(){
+    //     return(
+    //       <Questions />  
+    //     );
+        // this.setState({condition})
+        // return(
+        //     <Questions />
+        // );
+    // }
+
     render(){
+        const { condition } = this.state;
         return(
             <div className="Main">
             <header className="App-header">
@@ -160,6 +174,7 @@ class Main extends Component {
                         variant="contained"
                         color="primary"
                         onClick={() => (window.location.href = "questions.html")}
+                        // onClick={() => this.ToQuestion(true)}
                         >
                         Start Quiz!
                         </Button>
