@@ -12,7 +12,6 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 
 const baseURL = "https://opentdb.com/api.php?";
-
 class App extends Component {
     constructor(props) {
       super(props);
@@ -41,6 +40,7 @@ class App extends Component {
     };
   
     render() {
+      var quizURL = createURL(baseURL, this.state.slider, this.state.category, this.state.difficulty, this.state.questionType);
       return (
         <div className="App">
          <header className="App-header">
@@ -54,7 +54,7 @@ class App extends Component {
                <Typography variant="h4" component="h1" gutterBottom>
                   Welcome to The Trivia App!
                 </Typography>
-                <p>{createURL(baseURL, this.state.slider, this.state.category, this.state.difficulty, this.state.questionType)}</p>
+                <p>{quizURL}</p>
               </Box>
            </Container>
            <div className='input'>
@@ -179,7 +179,8 @@ class App extends Component {
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={() => (window.location.href = "questions.html")}
+                    onClick={() => (fetchQuestions(quizURL))}
+                    //onClick={() => (window.location.href = "questions.html")}
                   >
                     Start Quiz!
                   </Button>
@@ -208,4 +209,55 @@ function createURL(base, count, category, difficulty, type) {
     apiURL += "&type=" + type;
   }
   return apiURL;
+}
+
+function fetchQuestions(url) {
+  fetch(url)
+    .then((response) => response.json())
+    .then((questions) => {
+      console.log("Questions", questions);
+      //listData(questions);
+    })
+    .catch((error) => {
+      console.log("Request Failed", error);
+      //NEED TO ADD SOME SORT OF OUTPUT HERE FOR DIFFERENT RESPONSE CODES
+    });
+}
+
+function listData(data) {
+  for (let i in data.results) {
+    //output.innerHTML += createListItem(data.results[i]);
+  }
+}
+
+function createListItem(data) {
+  var str =
+    "<li>" +
+    data.question +
+    "<br>" +
+    shuffleAnswers(data.correct_answer, data.incorrect_answers) +
+    "</li>";
+  return str;
+}
+
+function shuffleAnswers(correct_answer, incorrect_answers) {
+  var oldArr = correct_answer + "," + incorrect_answers;
+  //console.log(oldArr);
+  oldArr = oldArr.split(",");
+  //console.log(oldArr);
+  var newArr = [];
+  for (let i in oldArr) {
+    var j = getRandomInt(oldArr.length);
+    while (newArr[j] != null) {
+      j++;
+      j = j % 4;
+      //console.log(j);
+    }
+    newArr[j] = oldArr[i];
+  }
+  return newArr;
+}
+
+function getRandomInt(max) {
+  return Math.floor(Math.random() * Math.floor(max));
 }
