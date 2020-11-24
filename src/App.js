@@ -3,6 +3,7 @@ import "./App.css";
 import React, {Component} from "react";
 import Main from "./main.js";
 import Questions from "./questions";
+import Questions_tf from "./questions-tf";
 // import Typography from "@material-ui/core/Typography";
 // import Button from "@material-ui/core/Button";
 // import Box from "@material-ui/core/Box";
@@ -23,8 +24,8 @@ class App extends Component {
     // };
     render() {
       return (
-          <Main />
-          // <Questions />
+          // <Main />
+          <Questions_tf />
       );
     }
 }
