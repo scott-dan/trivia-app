@@ -11,6 +11,7 @@ import FormLabel from "@material-ui/core/FormLabel";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 
+const baseURL = "https://opentdb.com/api.php?";
 
 class App extends Component {
     constructor(props) {
@@ -48,13 +49,12 @@ class App extends Component {
               className="App-logo"
               alt="logo"
            />
-            </header>
-           <body className="App-body">
            <Container maxWidth="sm">
               <Box my={3}>
                <Typography variant="h4" component="h1" gutterBottom>
                   Welcome to The Trivia App!
                 </Typography>
+                <p>{createURL(baseURL, this.state.slider, this.state.category, this.state.difficulty, this.state.questionType)}</p>
               </Box>
            </Container>
            <div className='input'>
@@ -186,10 +186,26 @@ class App extends Component {
               </Grid>
             </Grid>
           </div>
-        </body>
+        </header>
       </div>
     )
   }
 }
 
 export default App;
+
+function createURL(base, count, category, difficulty, type) {
+  var apiURL = base;
+
+  apiURL += "amount=" + count;
+  if (category !== "any") {
+    apiURL += "&category=" + category;
+  }
+  if (difficulty !== "any") {
+    apiURL += "&difficulty=" + difficulty;
+  }
+  if (type !== "any") {
+    apiURL += "&type=" + type;
+  }
+  return apiURL;
+}
