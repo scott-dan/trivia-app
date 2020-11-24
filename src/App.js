@@ -67,14 +67,12 @@ class App extends Component {
                     <Slider
                     key={`slider-${this.state.slider}`}
                     defaultValue={this.state.slider}
-            //        getAriaValueText={valuetext}
                     aria-labelledby="qCountSelect"
                     step={1}
                     marks
                     min={0}
                     max={50}
                     valueLabelDisplay="auto"
-                    //onChange={this.updateSlider}
                     onChangeCommitted={this.updateSlider}
                   />
                 </Paper>
@@ -112,30 +110,6 @@ class App extends Component {
               <Grid item xs={4}>
                 <Paper className='paper'>
                   <FormLabel component="legend">Quiz Difficulty:</FormLabel>
-                  {/*
-                  <RadioGroup
-                    aria-label="difficulty"
-                    name="difficulty"
-                    value={value}
-                    onChange={handleRadioChange}
-                  >
-                    <FormControlLabel
-                      value="easy"
-                      control={<Radio />}
-                      label="Easy"
-                    />
-                    <FormControlLabel
-                      value="medium"
-                      control={<Radio />}
-                      label="Medium"
-                    />
-                    <FormControlLabel
-                      value="hard"
-                      control={<Radio />}
-                      label="Hard"
-                    />
-                  </RadioGroup>
-                  */}
                   <Select native defaultValue="easy" id="grouped-native-select" onChange={this.updateDifficulty}>
                     <option value="easy">Easy</option>
                     <option value="medium">Medium</option>
@@ -146,30 +120,6 @@ class App extends Component {
               <Grid item xs={4}>
                 <Paper className='paper'>
                   <FormLabel component="legend">Select Question Type:</FormLabel>
-                  {/*}
-                  <FormGroup>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          checked={multipleChoice}
-                          onChange={handleCheckboxChange}
-                          name="multipleChoice"
-                        />
-                      }
-                      label="Multiple Choice"
-                    />
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          checked={binary}
-                          onChange={handleCheckboxChange}
-                          name="binary"
-                        />
-                      }
-                      label="True or False"
-                    />
-                  </FormGroup>
-                    */}
                   <Select native defaultValue="any" id="grouped-native-select" onChange={this.updateQuestionType}>
                     <option value="any">Any</option>
                     <option value="boolean">True/False</option>
