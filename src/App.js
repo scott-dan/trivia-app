@@ -65,6 +65,7 @@ class App extends Component {
                      Select the Number of Questions to Play
                    </Typography>
                     <Slider
+                    key={`slider-${this.state.slider}`}
                     defaultValue={this.state.slider}
             //        getAriaValueText={valuetext}
                     aria-labelledby="qCountSelect"
@@ -73,7 +74,8 @@ class App extends Component {
                     min={0}
                     max={50}
                     valueLabelDisplay="auto"
-                    onChange={this.updateSlider}
+                    //onChange={this.updateSlider}
+                    onChangeCommitted={this.updateSlider}
                   />
                 </Paper>
               </Grid>
