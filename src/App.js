@@ -16,12 +16,32 @@ class App extends Component {
     constructor(props) {
       super(props);
       this.state = {
-        slider: 0,
-        category: "any",
+        slider: 10,
+        category: "",
         difficulty: "easy",
         questionType: "any"
       };
     }
+
+    updateSlider = (event, newSlider) => {
+      console.log(newSlider);
+      this.setState({ slider: newSlider });
+    };
+
+    updateCategory = (event, newCategory) =>  {
+      console.log(this.newCategory);
+      this.setState({ category: newCategory });
+    };
+
+    updateDifficulty = (event, newDifficulty) => {
+      console.log(this.newDifficulty);
+      this.setState({ difficulty: newDifficulty });
+    };
+
+    updateQuestionType = (event, newQuestionType) =>  {
+      console.log(this.newQuestionType);
+      this.setState({ questionType: newQuestionType });
+    };
   
     render() {
       return (
@@ -49,7 +69,7 @@ class App extends Component {
                      Select the Number of Questions to Play
                    </Typography>
                     <Slider
-                    defaultValue={10}
+                    defaultValue={this.state.slider}
             //        getAriaValueText={valuetext}
                     aria-labelledby="qCountSelect"
                     step={1}
@@ -57,6 +77,7 @@ class App extends Component {
                     min={0}
                     max={50}
                     valueLabelDisplay="auto"
+                    onChange={this.updateSlider}
                   />
                 </Paper>
               </Grid>
@@ -65,11 +86,11 @@ class App extends Component {
                   <InputLabel htmlFor="grouped-native-select">
                     Category
                   </InputLabel>
-                  <Select native defaultValue="" id="grouped-native-select">
-                    <option value="any">Any</option>
+                  <Select native defaultValue={this.state.category} id="grouped-native-select" onChange={this.updateCategory}>
+                    <option value="">Any</option>
                     <optgroup label="General">
                       <option value="9">General Knowledge</option>
-                      <option value="art">Art</option>
+                      <option value="25">Art</option>
                     </optgroup>
   
                     <optgroup label="Entertainment">
@@ -117,7 +138,7 @@ class App extends Component {
                     />
                   </RadioGroup>
                   */}
-                  <Select native defaultValue="easy" id="grouped-native-select">
+                  <Select native defaultValue="easy" id="grouped-native-select" onChange={this.updateDifficulty}>
                     <option value="easy">Easy</option>
                     <option value="medium">Medium</option>
                     <option value="hard">Hard</option>
@@ -151,7 +172,7 @@ class App extends Component {
                     />
                   </FormGroup>
                     */}
-                  <Select native defaultValue="any" id="grouped-native-select">
+                  <Select native defaultValue="any" id="grouped-native-select" onChange={this.updateQuestionType}>
                     <option value="any">Any</option>
                     <option value="boolean">True/False</option>
                     <option value="multiple">Mutliple Choice</option>
