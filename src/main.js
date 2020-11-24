@@ -77,10 +77,10 @@ class Main extends Component {
                         Category
                         </InputLabel>
                         <Select native defaultValue="" id="grouped-native-select">
-                        <option value="any">Any</option>
+                        <option value="">Any</option>
                         <optgroup label="General">
                             <option value="9">General Knowledge</option>
-                            <option value="art">Art</option>
+                            <option value="25">Art</option>
                         </optgroup>
 
                         <optgroup label="Entertainment">
