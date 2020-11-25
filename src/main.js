@@ -11,191 +11,277 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Questions from "./questions";
 
+const baseURL = "https://opentdb.com/api.php?";
+//var trivia = [];
+
+
 class Main extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          slider: 0,
-          category: "any",
+          slider: 10,
+          category: "",
           difficulty: "easy",
           questionType: "any",
-        //   condition: false 
+          jsondata: [],
+        //   condition: false
         };
-        // this.ToQuestion = this.ToQuestion.bind(this);
       }
-    // ToQuestion(){
-    //     return(
-    //       <Questions />  
-    //     );
-        // this.setState({condition})
-        // return(
-        //     <Questions />
-        // );
-    // }
+  
+      updateSlider = (event, newSlider) => {
+        this.setState({ slider: newSlider });
+      };
+  
+      updateCategory = (event) =>  {
+        this.setState({ category: event.target.value });
+      };
+  
+      updateDifficulty = (event) => {
+        this.setState({ difficulty: event.target.value });
+      };
+  
+      updateQuestionType = (event) =>  {
+        this.setState({ questionType: event.target.value });
+      };
 
-    render(){
-        const { condition } = this.state;
-        return(
-            <div className="Main">
-            <header className="App-header">
-                <img
-                    src="http://www.pngmart.com/files/8/Colorful-Smoke-Transparent-Background.png"
-                    className="App-logo"
-                    alt="logo"
-                />
-                </header>
-                <body className="App-body">
-                <Container maxWidth="sm">
-                    <Box my={3}>
-                    <Typography variant="h4" component="h1" gutterBottom>
-                        Welcome to The Trivia App!
-                    </Typography>
-                    </Box>
-                </Container>
-                <div className='input'>
-                <Grid container spacing={1}>
-                    <Grid item xs={12}>
-                        <Paper className='paper'>
-                        <Typography id="qCountSelect" gutterBottom>
-                        Select the Number of Questions to Play
-                        </Typography>
-                        <Slider
-                        defaultValue={10}
-                //        getAriaValueText={valuetext}
-                        aria-labelledby="qCountSelect"
-                        step={1}
-                        marks
-                        min={0}
-                        max={50}
-                        valueLabelDisplay="auto"
-                        />
-                    </Paper>
-                    </Grid>
-                    <Grid item xs={4}>
-                    <Paper className='paper'>
-                        <InputLabel htmlFor="grouped-native-select">
-                        Category
-                        </InputLabel>
-                        <Select native defaultValue="" id="grouped-native-select">
-                        <option value="">Any</option>
-                        <optgroup label="General">
-                            <option value="9">General Knowledge</option>
-                            <option value="25">Art</option>
-                        </optgroup>
+      updateData (url) {
+        fetch(url)
+        .then((response) => response.json())
+        // .then(Main => {
+        //     this.setState({ data: Main })
+        .then((responseJson => {
+            this.setState(
+                {
+                    data: responseJson.results
+                
+                })
+            console.log(this.state.data[1].question);
+        }))
+        .catch((error) => {
+            console.log("Request Failed", error);
+            //NEED TO ADD SOME SORT OF OUTPUT HERE FOR DIFFERENT RESPONSE CODES
+        });
+      };
 
-                        <optgroup label="Entertainment">
-                            <option value="10">Books</option>
-                            <option value="11">Film</option>
-                            <option value="12">Music</option>
-                            <option value="13">Musicals & Theatres</option>
-                            <option value="14">Television</option>
-                            <option value="15">Video Games</option>
-                            <option value="16">Board Games</option>
-                        </optgroup>
+      handleSubmit = (quizURL) => {
+        // console.log(quizURL);
+        this.updateData(quizURL);
+        // this.setState({ condition: true })
+        // console.log(this.state.data.results[1].question);
+        
+        // console.log(this.state.data[1].question);
 
-                        <optgroup label="Science">
-                            <option value="17">Nature</option>
-                            <option value="18">Computers</option>
-                            <option value="19">Mathematics</option>
-                        </optgroup>
-                        </Select>
-                    </Paper>
-                    </Grid>
-                    <Grid item xs={4}>
+        // fetchAsync(quizURL);
+
+        // fetchQuestions(quizURL);
+        // var question, answers, correctAnswer;
+
+        // var prepTrivia = {
+        //   question: [],
+        //   answers: [],
+        //   correctAnswer: [],
+        // };
+
+            return(
+                <Questions />
+            );
+
+        // for (let i in trivia) {
+        //     answers.push(createListItem(trivia[i]));
+//            prepTrivia.question.push(trivia.question);
+            // correctAnswer.push(trivia.correct_answer);
+            // console.log("question - " + trivia[1].question)
+            // console.log("question - " + prepTrivia.question[1])
+        // }
+    
+        // axios
+        //   .post('http://localhost:3001/create', book)
+        //   .then(() => console.log('Book Created'))
+        //   .catch(err => {
+        //     console.error(err);
+        //   });
+      };
+      render() {
+        var quizURL = createURL(baseURL, this.state.slider, this.state.category, this.state.difficulty, this.state.questionType);
+        return (
+          <div className="App">
+           <header className="App-header">
+             <img
+                src="http://www.pngmart.com/files/8/Colorful-Smoke-Transparent-Background.png"
+                className="App-logo"
+                alt="logo"
+             />
+             <Container maxWidth="sm">
+                <Box my={3}>
+                 <Typography variant="h4" component="h1" gutterBottom>
+                    Welcome to The Trivia App!
+                  </Typography>
+                  <p>{quizURL}</p>
+                </Box>
+             </Container>
+             <div className='input'>
+               <Grid container spacing={1}>
+                  <Grid item xs={12}>
                     <Paper className='paper'>
-                        <FormLabel component="legend">Quiz Difficulty:</FormLabel>
-                        {/*
-                        <RadioGroup
-                        aria-label="difficulty"
-                        name="difficulty"
-                        value={value}
-                        onChange={handleRadioChange}
-                        >
-                        <FormControlLabel
-                            value="easy"
-                            control={<Radio />}
-                            label="Easy"
-                        />
-                        <FormControlLabel
-                            value="medium"
-                            control={<Radio />}
-                            label="Medium"
-                        />
-                        <FormControlLabel
-                            value="hard"
-                            control={<Radio />}
-                            label="Hard"
-                        />
-                        </RadioGroup>
-                        */}
-                        <Select native defaultValue="easy" id="grouped-native-select">
-                        <option value="easy">Easy</option>
-                        <option value="medium">Medium</option>
-                        <option value="hard">Hard</option>
-                        </Select>
-                    </Paper>
-                    </Grid>
-                    <Grid item xs={4}>
-                    <Paper className='paper'>
-                        <FormLabel component="legend">Select Question Type:</FormLabel>
-                        {/*}
-                        <FormGroup>
-                        <FormControlLabel
-                            control={
-                            <Checkbox
-                                checked={multipleChoice}
-                                onChange={handleCheckboxChange}
-                                name="multipleChoice"
-                            />
-                            }
-                            label="Multiple Choice"
-                        />
-                        <FormControlLabel
-                            control={
-                            <Checkbox
-                                checked={binary}
-                                onChange={handleCheckboxChange}
-                                name="binary"
-                            />
-                            }
-                            label="True or False"
-                        />
-                        </FormGroup>
-                        */}
-                        <Select native defaultValue="any" id="grouped-native-select">
-                        <option value="any">Any</option>
-                        <option value="boolean">True/False</option>
-                        <option value="multiple">Mutliple Choice</option>
-                        </Select>
-                    </Paper>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() => (window.location.href = "questions.html")}
-                        // onClick={() => this.ToQuestion(true)}
-                        >
-                        Start Quiz!
-                        </Button>
-                    </Grid>
+                      <Typography id="qCountSelect" gutterBottom>
+                       Select the Number of Questions to Play
+                     </Typography>
+                      <Slider
+                      key={`slider-${this.state.slider}`}
+                      defaultValue={this.state.slider}
+                      aria-labelledby="qCountSelect"
+                      step={1}
+                      marks
+                      min={0}
+                      max={50}
+                      valueLabelDisplay="auto"
+                      onChangeCommitted={this.updateSlider}
+                    />
+                  </Paper>
                 </Grid>
-                </div>
-            </body>
+                <Grid item xs={4}>
+                  <Paper className='paper'>
+                    <InputLabel htmlFor="grouped-native-select">
+                      Category
+                    </InputLabel>
+                    <Select native defaultValue={this.state.category} id="grouped-native-select" onChange={this.updateCategory}>
+                      <option value="">Any</option>
+                      <optgroup label="General">
+                        <option value="9">General Knowledge</option>
+                        <option value="25">Art</option>
+                      </optgroup>
+    
+                      <optgroup label="Entertainment">
+                        <option value="10">Books</option>
+                        <option value="11">Film</option>
+                        <option value="12">Music</option>
+                        <option value="13">Musicals & Theatres</option>
+                        <option value="14">Television</option>
+                        <option value="15">Video Games</option>
+                        <option value="16">Board Games</option>
+                      </optgroup>
+    
+                      <optgroup label="Science">
+                        <option value="17">Nature</option>
+                        <option value="18">Computers</option>
+                        <option value="19">Mathematics</option>
+                      </optgroup>
+                    </Select>
+                  </Paper>
+                </Grid>
+                <Grid item xs={4}>
+                  <Paper className='paper'>
+                    <FormLabel component="legend">Quiz Difficulty:</FormLabel>
+                    <Select native defaultValue="easy" id="grouped-native-select" onChange={this.updateDifficulty}>
+                      <option value="easy">Easy</option>
+                      <option value="medium">Medium</option>
+                      <option value="hard">Hard</option>
+                    </Select>
+                  </Paper>
+                </Grid>
+                <Grid item xs={4}>
+                  <Paper className='paper'>
+                    <FormLabel component="legend">Select Question Type:</FormLabel>
+                    <Select native defaultValue="any" id="grouped-native-select" onChange={this.updateQuestionType}>
+                      <option value="any">Any</option>
+                      <option value="boolean">True/False</option>
+                      <option value="multiple">Mutliple Choice</option>
+                    </Select>
+                  </Paper>
+                </Grid>
+                <Grid item xs={12}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => (this.handleSubmit(quizURL))}
+                      //onClick={() => (window.location.href = "questions.html")}
+                    >
+                      Start Quiz!
+                    </Button>
+                </Grid>
+              </Grid>
             </div>
-        );
+          </header>
+        {/* {this.state.condition === true ? <Questions /> : <Main />} */}
+        </div>
+      )
     }
-}
+  }
 
-// render(<App />, document.getElementById("root"));
-
-// export default props => (
-//     < >
-//         Main view{" "}
-//         <button value ={1} onClick={props.clickBtn}>
-//             questions
-//         </button>{" "}
-//     </>
-
-// );
 export default Main;
+function createURL(base, count, category, difficulty, type) {
+    var apiURL = base;
+  
+    apiURL += "amount=" + count;
+    if (category !== "any") {
+      apiURL += "&category=" + category;
+    }
+    if (difficulty !== "any") {
+      apiURL += "&difficulty=" + difficulty;
+    }
+    if (type !== "any") {
+      apiURL += "&type=" + type;
+    }
+    console.log(apiURL)
+    return apiURL;
+  }
+
+// fetchAsync(url);
+
+//   function fetchQuestions(url) {
+//     fetch(url)
+//       .then((response) => response.json())
+//       .then((questions) => {
+//       })
+//       .catch((error) => {
+//         console.log("Request Failed", error);
+//         //NEED TO ADD SOME SORT OF OUTPUT HERE FOR DIFFERENT RESPONSE CODES
+//       });
+//   }
+  
+//   function listData(data) {
+//     for (let i in data.results) {
+//       createListItem(data.results[i]);
+//     }
+//   }
+  
+  function createListItem(data) {
+    var str =
+      "<li>" +
+    //   data.question +
+    //   "<br>" +
+      shuffleAnswers(data.correct_answer, data.incorrect_answers) +
+      "</li>";
+    return str;
+  }
+  
+  function shuffleAnswers(correct_answer, incorrect_answers) {
+    var oldArr = correct_answer + "," + incorrect_answers;
+    //console.log(oldArr);
+    oldArr = oldArr.split(",");
+    //console.log(oldArr);
+    var newArr = [];
+    for (let i in oldArr) {
+      var j = getRandomInt(oldArr.length);
+      while (newArr[j] != null) {
+        j++;
+        j = j % 4;
+        //console.log(j);
+      }
+      newArr[j] = oldArr[i];
+    }
+    return newArr;
+  }
+
+// async function fetchAsync (url) {
+//     let response = await fetch(url);
+//     if(response.status === 200){
+//         let json = await response.json;
+//         this.updateData();
+//     }
+//     throw new Error (response.status);
+// }
+  
+  function getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+  }

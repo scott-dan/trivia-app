@@ -24,8 +24,8 @@ class App extends Component {
     // };
     render() {
       return (
-          // <Main />
-          <Questions_tf />
+          <Main />
+          // <Questions_tf />
       );
     }
 }
