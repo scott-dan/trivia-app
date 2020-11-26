@@ -3,11 +3,20 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import Quiz from './Quiz'
 
 ReactDOM.render(
+  //App renders options page
   <React.StrictMode>
     <App />
   </React.StrictMode>,
+
+  //Quiz renders question/answer page
+  /*
+  <React.StrictMode>
+    <Quiz />
+  </React.StrictMode>,
+  */
   document.getElementById('root'),
 );
 
