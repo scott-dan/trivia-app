@@ -10,6 +10,8 @@ import InputLabel from "@material-ui/core/InputLabel";
 import FormLabel from "@material-ui/core/FormLabel";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+//import Quiz from "./Quiz";
 
 const baseURL = "https://opentdb.com/api.php?";
 
@@ -21,6 +23,13 @@ class App extends Component {
       category: "",
       difficulty: "easy",
       questionType: "any",
+      userAnswer: null,
+      currentIndex: 0,
+      question: "",
+      answers: [],
+      quizEnd: false,
+      score: 0,
+      disabled: true,
     };
   }
 
@@ -41,6 +50,7 @@ class App extends Component {
   };
 
   render() {
+    /*
     var quizURL = createURL(
       baseURL,
       this.state.slider,
@@ -48,7 +58,34 @@ class App extends Component {
       this.state.difficulty,
       this.state.questionType
     );
+    */
     return (
+      <Router>
+        <div>
+          <nav>
+            <ul>
+              <li>
+                <Link to="/">Home</Link>
+              </li>
+              <li>
+                <Link to="/quiz">Quiz</Link>
+              </li>
+            </ul>
+          </nav>
+
+          <Switch>
+            <Route path="/quiz">
+              {/*<Quiz />*/}
+              {this.Quiz()}
+            </Route>
+            <Route path="/">
+              {/*<Home />*/}
+              {this.Home()}
+            </Route>
+          </Switch>
+        </div>
+      </Router>
+      /*
       <div className="App">
         <header className="App-header">
           <img
@@ -158,6 +195,169 @@ class App extends Component {
           </div>
         </header>
       </div>
+      */
+    );
+  }
+
+  Home() {
+    var quizURL = createURL(
+      baseURL,
+      this.state.slider,
+      this.state.category,
+      this.state.difficulty,
+      this.state.questionType
+    );
+    return (
+      <div className="App">
+        <header className="App-header">
+          <img
+            src="http://www.pngmart.com/files/8/Colorful-Smoke-Transparent-Background.png"
+            className="App-logo"
+            alt="logo"
+          />
+          <Container maxWidth="sm">
+            <Box my={3}>
+              <Typography variant="h4" component="h1" gutterBottom>
+                Welcome to The Trivia App!
+              </Typography>
+              <p>{quizURL}</p>
+            </Box>
+          </Container>
+          <div className="input">
+            <Grid container spacing={1}>
+              <Grid item xs={12}>
+                <Paper className="paper">
+                  <Typography id="qCountSelect" gutterBottom>
+                    Select the Number of Questions to Play
+                  </Typography>
+                  <Slider
+                    key={`slider-${this.state.slider}`}
+                    defaultValue={this.state.slider}
+                    aria-labelledby="qCountSelect"
+                    step={1}
+                    marks
+                    min={0}
+                    max={50}
+                    valueLabelDisplay="auto"
+                    onChangeCommitted={this.updateSlider}
+                  />
+                </Paper>
+              </Grid>
+              <Grid item xs={4}>
+                <Paper className="paper">
+                  <InputLabel htmlFor="grouped-native-select">
+                    Category
+                  </InputLabel>
+                  <Select
+                    native
+                    defaultValue={this.state.category}
+                    id="grouped-native-select"
+                    onChange={this.updateCategory}
+                  >
+                    <option value="">Any</option>
+                    <optgroup label="General">
+                      <option value="9">General Knowledge</option>
+                      <option value="25">Art</option>
+                    </optgroup>
+
+                    <optgroup label="Entertainment">
+                      <option value="10">Books</option>
+                      <option value="11">Film</option>
+                      <option value="12">Music</option>
+                      <option value="13">Musicals & Theatres</option>
+                      <option value="14">Television</option>
+                      <option value="15">Video Games</option>
+                      <option value="16">Board Games</option>
+                    </optgroup>
+
+                    <optgroup label="Science">
+                      <option value="17">Nature</option>
+                      <option value="18">Computers</option>
+                      <option value="19">Mathematics</option>
+                    </optgroup>
+                  </Select>
+                </Paper>
+              </Grid>
+              <Grid item xs={4}>
+                <Paper className="paper">
+                  <FormLabel component="legend">Quiz Difficulty:</FormLabel>
+                  <Select
+                    native
+                    defaultValue="easy"
+                    id="grouped-native-select"
+                    onChange={this.updateDifficulty}
+                  >
+                    <option value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
+                  </Select>
+                </Paper>
+              </Grid>
+              <Grid item xs={4}>
+                <Paper className="paper">
+                  <FormLabel component="legend">
+                    Select Question Type:
+                  </FormLabel>
+                  <Select
+                    native
+                    defaultValue="any"
+                    id="grouped-native-select"
+                    onChange={this.updateQuestionType}
+                  >
+                    <option value="any">Any</option>
+                    <option value="boolean">True/False</option>
+                    <option value="multiple">Mutliple Choice</option>
+                  </Select>
+                </Paper>
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  //onClick={() => startQuiz(quizURL)}
+                  onClick={() => fetchQuestions(quizURL)}
+                  //onClick={() => (window.location.href = "questions.html")}
+                >
+                  Start Quiz!
+                </Button>
+              </Grid>
+            </Grid>
+          </div>
+        </header>
+      </div>
+    );
+  }
+
+  Quiz() {
+    //const { question, options, currentIndex, userAnswer, quizEnd } = this.state;
+    //this.setState.question(QuizData[this.currentIndex].question);
+    return (
+      <div className="quiz">
+        {/* HINT: replace "false" with logic to display the 
+score when the user has answered all the questions */}
+        {false ? (
+          <div className="score-section">
+            You scored 1 out of {QuizData.length}
+          </div>
+        ) : (
+          <>
+            <div className="question-section">
+              <div className="question-count">
+                <span>Question 1</span>/{QuizData.length}
+              </div>
+              <div className="question-text">
+                {this.question}
+              </div>
+            </div>
+            <div className="answer-section">
+              <button>Answer 1</button>
+              <button>Answer 2</button>
+              <button>Answer 3</button>
+              <button>Answer 4</button>
+            </div>
+          </>
+        )}
+      </div>
     );
   }
 }
@@ -165,6 +365,7 @@ class App extends Component {
 export default App;
 
 export var QuizData = [
+  /*
   {
     category: "Entertainment: Comics",
     type: "multiple",
@@ -191,6 +392,7 @@ export var QuizData = [
     correct_answer: "Galois",
     incorrect_answers: ["Abel", "Euler", "Gauss"],
   },
+  */
 ];
 
 function createURL(base, count, category, difficulty, type) {
@@ -209,12 +411,18 @@ function createURL(base, count, category, difficulty, type) {
   return apiURL;
 }
 
+function startQuiz(url) {
+  fetchQuestions(url);
+  window.location.href = "quiz";
+}
+
 function fetchQuestions(url) {
   fetch(url)
     .then((response) => response.json())
     .then((questions) => {
-      QuizData = questions;
+      QuizData = questions.results;
       console.log(QuizData);
+      console.log(QuizData.length);
     })
     .catch((error) => {
       console.log("Request Failed", error);
