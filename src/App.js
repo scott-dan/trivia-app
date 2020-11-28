@@ -23,7 +23,6 @@ class App extends Component {
       category: "",
       difficulty: "easy",
       questionType: "any",
-      quizURL: "",
       quizData: [],
     };
   }
@@ -44,6 +43,16 @@ class App extends Component {
     this.setState({ questionType: event.target.value });
   };
 
+  updateQuestionType = (event) => {
+    this.setState({ questionType: event.target.value });
+  };
+
+  updateQuizData (dataResults) {
+    this.setState({ quizData: dataResults}, function() {
+      console.log("setState finished", this.state);
+    });
+  };
+
   render() {
     return (
       <Router>
@@ -60,10 +69,8 @@ class App extends Component {
           </nav>
 
           <Switch>
-            <Route path="/quiz" {...this.state}>
-              {<Quiz />}
-              {/*<Quiz data={this.state.quizURL} />*/}
-              {/*this.Quiz()*/}
+            <Route path="/quiz">
+              {<Quiz {...this.state} />}
             </Route>
             <Route path="/">
               {/*<Home />*/}
@@ -79,8 +86,7 @@ class App extends Component {
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
-        this.setState({ quizData: data.results });
-        console.log(this.state.quizData);
+        this.updateQuizData(data.results);
       })
       .catch((error) => {
         console.log("Request Failed", error);
@@ -104,7 +110,7 @@ class App extends Component {
   */
 
   Home() {
-    var quizURL = createURL(
+    var qURL = createURL(
       baseURL,
       this.state.slider,
       this.state.category,
@@ -124,7 +130,7 @@ class App extends Component {
               <Typography variant="h4" component="h1" gutterBottom>
                 Welcome to The Trivia App!
               </Typography>
-              <p>{quizURL}</p>
+              <p>{qURL}</p>
             </Box>
           </Container>
           <div className="input">
@@ -218,11 +224,18 @@ class App extends Component {
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={() => 
-                    //this.fetchQuestions(quizURL)
+                  onClick={() => { 
+                    this.fetchQuestions(qURL);
+                    setTimeout(() => {
+                      console.log(this.state);
+                      //window.location.assign(`http://localhost:${port}/quiz`)
+                    }, 2000);
+                    //console.log(this.state);
+                    //window.location.assign(`http://localhost:${port}/quiz`)
                     //window.location.href = "/quiz"
-                    window.location.assign(`http://localhost:${port}/quiz`)
+                    //window.location.assign(`http://localhost:${port}/quiz`)
                     //this.startQuiz(quizURL)
+                    }
                   }
                 >
                   Start Quiz!
@@ -257,9 +270,9 @@ export default App;
 class Quiz extends React.Component {
   constructor(props) {
     super(props);
-    console.log(this.props);
-    console.log(this.props.quizData);
+    console.log(props);
   }
+
   /*
   fetchQuestions(url) {
     fetch(url)
