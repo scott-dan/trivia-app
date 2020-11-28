@@ -43,16 +43,6 @@ class App extends Component {
     this.setState({ questionType: event.target.value });
   };
 
-  updateQuestionType = (event) => {
-    this.setState({ questionType: event.target.value });
-  };
-
-  updateQuizData (dataResults) {
-    this.setState({ quizData: dataResults}, function() {
-      console.log("setState finished", this.state);
-    });
-  };
-
   render() {
     return (
       <Router>
@@ -86,7 +76,8 @@ class App extends Component {
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
-        this.updateQuizData(data.results);
+        this.setState({ quizData: data.results});
+        //console.log("if we got here, we're fine", this.state);
       })
       .catch((error) => {
         console.log("Request Failed", error);
@@ -228,15 +219,17 @@ class App extends Component {
                     this.fetchQuestions(qURL);
                     setTimeout(() => {
                       console.log(this.state);
-                      //window.location.assign(`http://localhost:${port}/quiz`)
-                    }, 2000);
+                      //window.location.href = "/quiz"
+                    }, 1000);
                     //console.log(this.state);
                     //window.location.assign(`http://localhost:${port}/quiz`)
                     //window.location.href = "/quiz"
                     //window.location.assign(`http://localhost:${port}/quiz`)
                     //this.startQuiz(quizURL)
-                    }
                   }
+                  }
+                  //component={Link}
+                  //to="/quiz"
                 >
                   Start Quiz!
                 </Button>
@@ -267,7 +260,7 @@ function createURL(base, count, category, difficulty, type) {
 
 export default App;
 
-class Quiz extends React.Component {
+class Quiz extends Component {
   constructor(props) {
     super(props);
     console.log(props);
