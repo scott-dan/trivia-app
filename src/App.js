@@ -1,4 +1,5 @@
 import "./App.css";
+import { useHistory } from "react-router-dom";
 import React, { Component } from "react";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
@@ -11,11 +12,9 @@ import FormLabel from "@material-ui/core/FormLabel";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
-import { deepOrange, purple } from "@material-ui/core/colors";
 
+const port = process.env.PORT || 3000;
 const baseURL = "https://opentdb.com/api.php?";
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -24,47 +23,10 @@ class App extends Component {
       category: "",
       difficulty: "easy",
       questionType: "any",
+      quizURL: "",
       quizData: [],
     };
   }
-  questions = [
-    {
-      questionText: "What is the capital of France?",
-      answerOptions: [
-        { answerText: "New York", isCorrect: false },
-        { answerText: "London", isCorrect: false },
-        { answerText: "Paris", isCorrect: true },
-        { answerText: "Dublin", isCorrect: false },
-      ],
-    },
-    {
-      questionText: "Who is CEO of Tesla?",
-      answerOptions: [
-        { answerText: "Jeff Bezos", isCorrect: false },
-        { answerText: "Elon Musk", isCorrect: true },
-        { answerText: "Bill Gates", isCorrect: false },
-        { answerText: "Tony Stark", isCorrect: false },
-      ],
-    },
-    {
-      questionText: "The iPhone was created by which company?",
-      answerOptions: [
-        { answerText: "Apple", isCorrect: true },
-        { answerText: "Intel", isCorrect: false },
-        { answerText: "Amazon", isCorrect: false },
-        { answerText: "Microsoft", isCorrect: false },
-      ],
-    },
-    {
-      questionText: "How many Harry Potter books are there?",
-      answerOptions: [
-        { answerText: "1", isCorrect: false },
-        { answerText: "4", isCorrect: false },
-        { answerText: "6", isCorrect: false },
-        { answerText: "7", isCorrect: true },
-      ],
-    },
-  ];
 
   updateSlider = (event, newSlider) => {
     this.setState({ slider: newSlider });
@@ -98,8 +60,9 @@ class App extends Component {
           </nav>
 
           <Switch>
-            <Route path="/quiz">
+            <Route path="/quiz" {...this.state}>
               {<Quiz />}
+              {/*<Quiz data={this.state.quizURL} />*/}
               {/*this.Quiz()*/}
             </Route>
             <Route path="/">
@@ -124,6 +87,21 @@ class App extends Component {
         //NEED TO ADD SOME SORT OF OUTPUT HERE FOR DIFFERENT RESPONSE CODES
       });
   }
+
+  /*
+  startQuiz = () => {
+    let history = useHistory();
+    history.push('/quiz');
+  };
+  */
+  
+  /*
+  startQuiz(url) {
+    //window.location.assign("/quiz");
+    this.fetchQuestions(url);
+    window.location.assign(`http://localhost:${port}/quiz`);
+  }
+  */
 
   Home() {
     var quizURL = createURL(
@@ -240,7 +218,12 @@ class App extends Component {
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={() => this.fetchQuestions(quizURL)}
+                  onClick={() => 
+                    //this.fetchQuestions(quizURL)
+                    //window.location.href = "/quiz"
+                    window.location.assign(`http://localhost:${port}/quiz`)
+                    //this.startQuiz(quizURL)
+                  }
                 >
                   Start Quiz!
                 </Button>
@@ -271,13 +254,30 @@ function createURL(base, count, category, difficulty, type) {
 
 export default App;
 
-  class Quiz extends React.Component {
-    constructor(props) {
-      super(props)
-      console.log(this.props.quizData)
-    }
-    render() {
-      return(
+class Quiz extends React.Component {
+  constructor(props) {
+    super(props);
+    console.log(this.props);
+    console.log(this.props.quizData);
+  }
+  /*
+  fetchQuestions(url) {
+    fetch(url)
+      .then((response) => response.json())
+      .then((questions) => {
+        this.props.setState({ data: questions.results });
+        console.log(this.props.data);
+      })
+      .catch((error) => {
+        console.log("Request Failed", error);
+        //NEED TO ADD SOME SORT OF OUTPUT HERE FOR DIFFERENT RESPONSE CODES
+      });
+  }
+  */
+  
+  render() {
+    return (
+      //this.fetchQuestions(this.props.quizURL),
       <div className="App">
         <header className="App-header">
           <Container className="QContainer" maxWidth="md">
@@ -350,9 +350,9 @@ export default App;
           </Container>
         </header>
       </div>
-      );
-    }
+    );
   }
+}
 
 /*
 function fetchQuestions(url) {
