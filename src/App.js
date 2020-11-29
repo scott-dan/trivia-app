@@ -1,5 +1,5 @@
 import "./App.css";
-import { useHistory } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import React, { Component } from "react";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
@@ -24,6 +24,7 @@ class App extends Component {
       difficulty: "easy",
       questionType: "any",
       quizData: [],
+      showQuiz: false,
     };
   }
 
@@ -83,6 +84,38 @@ class App extends Component {
         console.log("Request Failed", error);
         //NEED TO ADD SOME SORT OF OUTPUT HERE FOR DIFFERENT RESPONSE CODES
       });
+
+      this.setState({ showQuiz: true, });
+  }
+
+  handleClick(qURL){
+
+    this.fetchQuestions(qURL);
+
+    this.props.history.push("/quiz");
+
+    setTimeout(() => {
+    console.log(this.state);
+    //window.location.href = "/quiz"
+    }, 500);
+
+
+  }
+
+  createURL(base, count, category, difficulty, type) {
+    var apiURL = base;
+
+    apiURL += "amount=" + count;
+    if (category !== "any") {
+      apiURL += "&category=" + category;
+    }
+    if (difficulty !== "any") {
+      apiURL += "&difficulty=" + difficulty;
+    }
+    if (type !== "any") {
+      apiURL += "&type=" + type;
+    }
+    return apiURL;
   }
 
   /*
@@ -101,7 +134,7 @@ class App extends Component {
   */
 
   Home() {
-    var qURL = createURL(
+    var qURL = this.createURL(
       baseURL,
       this.state.slider,
       this.state.category,
@@ -215,12 +248,10 @@ class App extends Component {
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={() => { 
-                    this.fetchQuestions(qURL);
-                    setTimeout(() => {
-                      console.log(this.state);
-                      //window.location.href = "/quiz"
-                    }, 1000);
+                  onClick={() => { this.handleClick(qURL)
+                    /////////
+
+
                     //console.log(this.state);
                     //window.location.assign(`http://localhost:${port}/quiz`)
                     //window.location.href = "/quiz"
@@ -241,24 +272,7 @@ class App extends Component {
     );
   }
 }
-
-function createURL(base, count, category, difficulty, type) {
-  var apiURL = base;
-
-  apiURL += "amount=" + count;
-  if (category !== "any") {
-    apiURL += "&category=" + category;
-  }
-  if (difficulty !== "any") {
-    apiURL += "&difficulty=" + difficulty;
-  }
-  if (type !== "any") {
-    apiURL += "&type=" + type;
-  }
-  return apiURL;
-}
-
-export default App;
+export default withRouter(App);
 
 class Quiz extends Component {
   constructor(props) {
@@ -267,7 +281,7 @@ class Quiz extends Component {
   }
 
   /*
-  fetchQuestions(url) {
+  fetchQuestions(url) g
     fetch(url)
       .then((response) => response.json())
       .then((questions) => {
@@ -292,9 +306,7 @@ class Quiz extends Component {
                 <Paper className="paper">
                   <div className="QuestionArea">
                     <Typography variant="h5" component="div">
-                      QUESTION: Lorem ipsum dolor sit amet, consectetur
-                      adipiscing elit, sed do tempor incididunt ut labore et
-                      dolore magna aliqua?
+                      {/* {this.props.quizData[1].question} */}
                     </Typography>
                   </div>
                 </Paper>
@@ -408,3 +420,4 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
 */
+
