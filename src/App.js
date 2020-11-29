@@ -1,5 +1,4 @@
 import "./App.css";
-import { useHistory } from "react-router-dom";
 import React, { Component } from "react";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
@@ -321,21 +320,6 @@ class Quiz extends Component {
     }
   }
 
-  /*
-  fetchQuestions(url) {
-    fetch(url)
-      .then((response) => response.json())
-      .then((questions) => {
-        this.props.setState({ data: questions.results });
-        console.log(this.props.data);
-      })
-      .catch((error) => {
-        console.log("Request Failed", error);
-        //NEED TO ADD SOME SORT OF OUTPUT HERE FOR DIFFERENT RESPONSE CODES
-      });
-  }
-  */
-
   render() {
     var current = this.state.currentIndex;
     if(this.indexCheck(current)){
@@ -367,7 +351,6 @@ class Quiz extends Component {
     }
     else{
       return (
-        //this.fetchQuestions(this.props.quizURL),
         <div className="App">
           <header className="App-header">
           <h1>
