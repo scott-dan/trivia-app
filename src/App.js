@@ -54,8 +54,12 @@ class App extends Component {
         <Router>
           <div className="nav-container">
             <nav>
-            <Grid container spacing={1}>
-            <Grid item xs={12}>
+            <Grid container
+              direction="row"
+              justify="space-between"
+              alignItems="center"
+            >
+            <Grid item xs={9}>
               <Link to="/">
                 <Button
                 variant="contained"
@@ -66,7 +70,7 @@ class App extends Component {
                 </Button>
               </Link>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={3}>
                   <Link to="/quiz">
                     <Button
                     variant="contained"
@@ -253,14 +257,11 @@ class App extends Component {
                     }, 1000);
                     this.updateShowQButton();
                   }}
-                >
-                  Retrive Questions!
+                >                    
+                Create Trivia Game
                 </Button>
               </Grid>
-              
-              <Grid item xs={12}>
               </Grid>
-            </Grid>
           </div>
         </header>
       </div>
@@ -373,6 +374,13 @@ class Quiz extends Component {
     }
   }
 
+  checkQType(type){
+    if(type !== "boolean")
+      return true;
+    else
+      return false;
+  }
+
   render() {
     var current = this.state.currentIndex;
     if(this.indexCheck(current)){
@@ -403,82 +411,137 @@ class Quiz extends Component {
       );
     }
     else{
-      return (
-        <div className="App">
-          <header className="App-header">
-          <h1>
-              Current Question: {this.state.currentIndex + 1}/{this.props.quizData.length}
-            </h1>
-            <Container className="QContainer" maxWidth="md">
-              <Grid container spacing={3}>
-                <Grid item xs={12}>
-                  <Paper className="paper">
-                    <div className="QuestionArea">
-                      <Typography variant="h5" component="div">
-                        {this.props.quizData[this.state.currentIndex].question}
-                      </Typography>
-                    </div>
-                  </Paper>
-                </Grid>
-                <Grid item xs={6}>
-                  <Button
-                    variant="contained"
-                    onClick={() => this.checkAnswer(this.state.answers[0])}
-                  >
-                    <div className="Answer1">
-                      <InputLabel htmlFor="grouped-native-select">
-                        {this.state.answers[0]}
-                      </InputLabel>
-                    </div>
-                  </Button>
-                </Grid>
-
-                <Grid item xs={6}>
-                  <Button
-                    variant="contained"
-                    onClick={() => this.checkAnswer(this.state.answers[1])}
-                  >
-                    <div className="Answer2">
-                      <InputLabel htmlFor="grouped-native-select">
-                        {this.state.answers[1]}
-                      </InputLabel>
-                    </div>
-                  </Button>
-                </Grid>
-
-                <Grid item xs={6}>
-                  <Button
-                    variant="contained"
-                    onClick={() => this.checkAnswer(this.state.answers[2])}
-                  >
-                    <div className="Answer3">
-                      <InputLabel htmlFor="grouped-native-select">
-                        {this.state.answers[2]}
-                      </InputLabel>
-                    </div>
-                  </Button>
-                </Grid>
-
-                <Grid item xs={6}>
-                  <Button
-                    variant="contained"
-                    onClick={() => this.checkAnswer(this.state.answers[3])}
-                  >
-                    <div className="Answer4">
-                      <InputLabel htmlFor="grouped-native-select">
-                        {this.state.answers[3]}
-                      </InputLabel>
-                    </div>
-                  </Button>
-                </Grid>
-              </Grid>
-            </Container>
+      var qType = this.props.quizData[this.state.currentIndex].type;
+      if(this.checkQType(qType)){
+        return (
+          <div className="App">
+            <header className="App-header">
             <h1>
-              Current Score: {this.state.score}/{this.props.quizData.length}
-            </h1>
-          </header>
-        </div>
-      );
+                Current Question: {this.state.currentIndex + 1}/{this.props.quizData.length}
+              </h1>
+              <Container className="QContainer" maxWidth="md">
+                <Grid container spacing={3}>
+                  <Grid item xs={12}>
+                    <Paper className="paper">
+                      <div className="QuestionArea">
+                        <Typography variant="h5" component="div">
+                          {this.props.quizData[this.state.currentIndex].question}
+                        </Typography>
+                      </div>
+                    </Paper>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Button
+                      variant="contained"
+                      onClick={() => this.checkAnswer(this.state.answers[0])}
+                    >
+                      <div className="Answer1">
+                        <InputLabel htmlFor="grouped-native-select">
+                          {this.state.answers[0]}
+                        </InputLabel>
+                      </div>
+                    </Button>
+                  </Grid>
+
+                  <Grid item xs={6}>
+                    <Button
+                      variant="contained"
+                      onClick={() => this.checkAnswer(this.state.answers[1])}
+                    >
+                      <div className="Answer2">
+                        <InputLabel htmlFor="grouped-native-select">
+                          {this.state.answers[1]}
+                        </InputLabel>
+                      </div>
+                    </Button>
+                  </Grid>
+
+                  <Grid item xs={6}>
+                    <Button
+                      variant="contained"
+                      onClick={() => this.checkAnswer(this.state.answers[2])}
+                    >
+                      <div className="Answer3">
+                        <InputLabel htmlFor="grouped-native-select">
+                          {this.state.answers[2]}
+                        </InputLabel>
+                      </div>
+                    </Button>
+                  </Grid>
+
+                  <Grid item xs={6}>
+                    <Button
+                      variant="contained"
+                      onClick={() => this.checkAnswer(this.state.answers[3])}
+                    >
+                      <div className="Answer4">
+                        <InputLabel htmlFor="grouped-native-select">
+                          {this.state.answers[3]}
+                        </InputLabel>
+                      </div>
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Container>
+              <h1>
+                Current Score: {this.state.score}/{this.props.quizData.length}
+              </h1>
+            </header>
+          </div>
+        );
+      }
+      else{
+        return (
+          <div className="App">
+            <header className="App-header">
+            <h1>
+                Current Question: {this.state.currentIndex + 1}/{this.props.quizData.length}
+              </h1>
+              <Container className="QContainer" maxWidth="md">
+                <Grid container spacing={3}>
+                  <Grid item xs={12}>
+                    <Paper className="paper">
+                      <div className="QuestionArea">
+                        <Typography variant="h5" component="div">
+                          {this.props.quizData[this.state.currentIndex].question}
+                        </Typography>
+                      </div>
+                    </Paper>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Button
+                      variant="contained"
+                      onClick={() => this.checkAnswer(this.state.answers[0])}
+                    >
+                      <div className="Answer1">
+                        <InputLabel htmlFor="grouped-native-select">
+                          {this.state.answers[0]}
+                        </InputLabel>
+                      </div>
+                    </Button>
+                  </Grid>
+
+                  <Grid item xs={6}>
+                    <Button
+                      variant="contained"
+                      onClick={() => this.checkAnswer(this.state.answers[1])}
+                    >
+                      <div className="Answer2">
+                        <InputLabel htmlFor="grouped-native-select">
+                          {this.state.answers[1]}
+                        </InputLabel>
+                      </div>
+                    </Button>
+                  </Grid>
+                  </Grid>
+                  </Container>
+              <h1>
+                Current Score: {this.state.score}/{this.props.quizData.length}
+              </h1>
+            </header>
+          </div>
+        );
+      }
     }
   }
 }
