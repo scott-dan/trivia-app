@@ -1,5 +1,5 @@
 import "./App.css";
-import { withRouter } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import React, { Component } from "react";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
@@ -24,7 +24,6 @@ class App extends Component {
       difficulty: "easy",
       questionType: "any",
       quizData: [],
-      showQuiz: false,
     };
   }
 
@@ -60,7 +59,9 @@ class App extends Component {
           </nav>
 
           <Switch>
-            <Route path="/quiz">{<Quiz {...this.state.value} />}</Route>
+            <Route path="/quiz">
+              {<Quiz {...this.state} />}
+            </Route>
             <Route path="/">
               {/*<Home />*/}
               {this.Home()}
@@ -75,31 +76,14 @@ class App extends Component {
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
-        this.setState({ quizData: data.results });
+        this.setState({ quizData: data.results});
         //console.log("if we got here, we're fine", this.state);
       })
       .catch((error) => {
         console.log("Request Failed", error);
         //NEED TO ADD SOME SORT OF OUTPUT HERE FOR DIFFERENT RESPONSE CODES
       });
-
-      this.setState({ showQuiz: true, });
   }
-
-  handleClick(qURL){
-
-    this.fetchQuestions(qURL);
-
-    this.props.history.push("/quiz");
-
-    setTimeout(() => {
-    console.log(this.state);
-    //window.location.href = "/quiz"
-    }, 500);
-
-
-  }
-
 
   /*
   startQuiz = () => {
@@ -107,7 +91,7 @@ class App extends Component {
     history.push('/quiz');
   };
   */
-
+  
   /*
   startQuiz(url) {
     //window.location.assign("/quiz");
@@ -231,10 +215,12 @@ class App extends Component {
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={() => { this.handleClick(qURL)
-                    /////////
-
-
+                  onClick={() => { 
+                    this.fetchQuestions(qURL);
+                    setTimeout(() => {
+                      console.log(this.state);
+                      //window.location.href = "/quiz"
+                    }, 1000);
                     //console.log(this.state);
                     //window.location.assign(`http://localhost:${port}/quiz`)
                     //window.location.href = "/quiz"
@@ -255,116 +241,9 @@ class App extends Component {
     );
   }
 }
-export default withRouter(App);
 
-class Quiz extends Component {
-  constructor(props) {
-    super(props);
-    console.log("Now in the Quiz class");
-    console.log(props);
+export default App;
 
-    var qURL = createURL(
-      baseURL,
-      this.props.slider,
-      this.props.category,
-      this.props.difficulty,
-      this.props.questionType
-    );
-
-    console.log(qURL);
-  }
-
-  /*
-  fetchQuestions(url) g
-    fetch(url)
-      .then((response) => response.json())
-      .then((questions) => {
-        this.props.setState({ data: questions.results });
-        console.log(this.props.data);
-      })
-      .catch((error) => {
-        console.log("Request Failed", error);
-        //NEED TO ADD SOME SORT OF OUTPUT HERE FOR DIFFERENT RESPONSE CODES
-      });
-  }
-  */
-
-  render() {
-    return (
-      //this.fetchQuestions(qURL),
-      <div className="App">
-        <header className="App-header">
-          <Container className="QContainer" maxWidth="md">
-            <Grid container spacing={3}>
-              <Grid item xs={12}>
-                <Paper className="paper">
-                  <div className="QuestionArea">
-                    <Typography variant="h5" component="div">
-                      {/* {this.props.quizData[1].question} */}
-                    </Typography>
-                  </div>
-                </Paper>
-              </Grid>
-              <Grid item xs={6}>
-                <Button variant="contained">
-                  {/* // color="primary"
-                                //onClick={() => (window.location.href = "questions.html")} */}
-                  <div className="Answer1">
-                    <InputLabel htmlFor="grouped-native-select">
-                      A. PLACEHOLDER FOR AN ANSWER
-                    </InputLabel>
-                  </div>
-                </Button>
-              </Grid>
-
-              <Grid item xs={6}>
-                <Button
-                  variant="contained"
-                  // color="primary"
-                  //onClick={() => (window.location.href = "questions.html")}
-                >
-                  <div className="Answer2">
-                    <InputLabel htmlFor="grouped-native-select">
-                      A. PLACEHOLDER FOR AN ANSWER
-                    </InputLabel>
-                  </div>
-                </Button>
-              </Grid>
-
-              <Grid item xs={6}>
-                <Button
-                  variant="contained"
-                  // color="primary"
-                  //onClick={() => (window.location.href = "questions.html")}
-                >
-                  <div className="Answer3">
-                    <InputLabel htmlFor="grouped-native-select">
-                      A. PLACEHOLDER FOR AN ANSWER
-                    </InputLabel>
-                  </div>
-                </Button>
-              </Grid>
-
-              <Grid item xs={6}>
-                <Button
-                  variant="contained"
-                  // color="primary"
-                  //onClick={() => (window.location.href = "questions.html")}
-                >
-                  <div className="Answer4">
-                    <InputLabel htmlFor="grouped-native-select">
-                      A. PLACEHOLDER FOR AN ANSWER
-                    </InputLabel>
-                  </div>
-                </Button>
-              </Grid>
-            </Grid>
-          </Container>
-        </header>
-      </div>
-    );
-  }
-}
 function createURL(base, count, category, difficulty, type) {
   var apiURL = base;
 
@@ -379,6 +258,153 @@ function createURL(base, count, category, difficulty, type) {
     apiURL += "&type=" + type;
   }
   return apiURL;
+}
+
+function shuffleAnswers(correct_answer, incorrect_answers) {
+  var oldArr = correct_answer + "," + incorrect_answers;
+  //console.log(oldArr);
+  oldArr = oldArr.split(",");
+  //console.log(oldArr);
+  var newArr = [];
+  for (let i in oldArr) {
+    var j = getRandomInt(oldArr.length);
+    while (newArr[j] != null) {
+      j++;
+      j = j % 4;
+      //console.log(j);
+    }
+    newArr[j] = oldArr[i];
+  }
+  return newArr;
+}
+
+function getRandomInt(max) {
+  return Math.floor(Math.random() * Math.floor(max));
+}
+
+class Quiz extends Component {
+  constructor(props) {
+    super(props);
+    console.log(props);
+    this.state = {
+      answers: [],
+      score: 0,
+      currentIndex: 0,
+    }
+  }
+
+  componentDidMount() {
+    console.log("Component did mount!");
+    var correct = this.props.quizData[this.state.currentIndex].correct_answer;
+    var incorrect = this.props.quizData[this.state.currentIndex].incorrect_answers;
+    var shuffled = shuffleAnswers(correct, incorrect);
+    this.setState({ answers: shuffled});
+  }
+
+  checkAnswer(answer) {
+    var correct = this.props.quizData[this.state.currentIndex].correct_answer;
+    if(answer === correct) {
+      this.setState({score: this.state.score + 1});
+    }
+    this.setState({currentIndex: this.state.currentIndex + 1});
+    this.render();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log("Component did update!");
+    if(prevProps.data !== this.props.data){
+      console.log(this.props);
+    }
+  }
+
+  /*
+  fetchQuestions(url) {
+    fetch(url)
+      .then((response) => response.json())
+      .then((questions) => {
+        this.props.setState({ data: questions.results });
+        console.log(this.props.data);
+      })
+      .catch((error) => {
+        console.log("Request Failed", error);
+        //NEED TO ADD SOME SORT OF OUTPUT HERE FOR DIFFERENT RESPONSE CODES
+      });
+  }
+  */
+  
+  render() {
+    return (
+      //this.fetchQuestions(this.props.quizURL),
+      <div className="App">
+        <header className="App-header">
+          <Container className="QContainer" maxWidth="md">
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <Paper className="paper">
+                  <div className="QuestionArea">
+                    <Typography variant="h5" component="div">
+                      {this.props.quizData[this.state.currentIndex].question}
+                    </Typography>
+                  </div>
+                </Paper>
+              </Grid>
+              <Grid item xs={6}>
+                <Button variant="contained" onClick={() => this.checkAnswer(this.state.answers[0])}>
+                  <div className="Answer1">
+                    <InputLabel htmlFor="grouped-native-select">
+                      {this.state.answers[0]}
+                    </InputLabel>
+                  </div>
+                </Button>
+              </Grid>
+
+              <Grid item xs={6}>
+                <Button
+                  variant="contained"
+                  // color="primary"
+                  //onClick={() => (window.location.href = "questions.html")}
+                >
+                  <div className="Answer2">
+                    <InputLabel htmlFor="grouped-native-select">
+                    {this.state.answers[1]}
+                    </InputLabel>
+                  </div>
+                </Button>
+              </Grid>
+
+              <Grid item xs={6}>
+                <Button
+                  variant="contained"
+                  // color="primary"
+                  //onClick={() => (window.location.href = "questions.html")}
+                >
+                  <div className="Answer3">
+                    <InputLabel htmlFor="grouped-native-select">
+                    {this.state.answers[2]}
+                    </InputLabel>
+                  </div>
+                </Button>
+              </Grid>
+
+              <Grid item xs={6}>
+                <Button
+                  variant="contained"
+                  // color="primary"
+                  //onClick={() => (window.location.href = "questions.html")}
+                >
+                  <div className="Answer4">
+                    <InputLabel htmlFor="grouped-native-select">
+                    {this.state.answers[3]}
+                    </InputLabel>
+                  </div>
+                </Button>
+              </Grid>
+            </Grid>
+          </Container>
+        </header>
+      </div>
+    );
+  }
 }
 
 /*
@@ -429,4 +455,3 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
 */
-
