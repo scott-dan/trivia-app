@@ -15,6 +15,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 const port = process.env.PORT || 3000;
 const baseURL = "https://opentdb.com/api.php?";
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -50,10 +51,10 @@ class App extends Component {
           <nav>
             <ul>
               <li>
-                <Link to="/">Home</Link>
+                <Link to="/">Question Select</Link>
               </li>
               <li>
-                <Link to="/quiz">Quiz</Link>
+                <Link to="/quiz">Go To Quiz</Link>
               </li>
             </ul>
           </nav>
@@ -82,21 +83,6 @@ class App extends Component {
       });
   }
 
-  /*
-  startQuiz = () => {
-    let history = useHistory();
-    history.push('/quiz');
-  };
-  */
-
-  /*
-  startQuiz(url) {
-    //window.location.assign("/quiz");
-    this.fetchQuestions(url);
-    window.location.assign(`http://localhost:${port}/quiz`);
-  }
-  */
-
   Home() {
     var qURL = createURL(
       baseURL,
@@ -108,13 +94,11 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          {/*
           <img
-            src="http://www.pngmart.com/files/8/Colorful-Smoke-Transparent-Background.png"
+            src="http://static.pokemonpets.com/images/monsters-images-800-800/2143-Shiny-Snorlax.png"
             className="App-logo"
             alt="logo"
           />
-          */}
           <Container maxWidth="sm">
             <Box my={3}>
               <Typography variant="h4" component="h1" gutterBottom>
@@ -219,16 +203,9 @@ class App extends Component {
                     setTimeout(() => {
                       console.log(this.state);
                     }, 1000);
-                    //console.log(this.state);
-                    //window.location.assign(`http://localhost:${port}/quiz`)
-                    //window.location.href = "/quiz"
-                    //window.location.assign(`http://localhost:${port}/quiz`)
-                    //this.startQuiz(quizURL)
                   }}
-                  //component={Link}
-                  //to="/quiz"
                 >
-                  Start Quiz!
+                  Retrive Questions!
                 </Button>
               </Grid>
             </Grid>
@@ -298,7 +275,16 @@ class Quiz extends Component {
         .incorrect_answers;
       var shuffled = shuffleAnswers(correct, incorrect);
       this.setState({ answers: shuffled });
+      this.buildAnswerArray();
     }
+  }
+
+  buildAnswerArray() {
+    var correct = this.props.quizData[this.state.currentIndex].correct_answer;
+    var incorrect = this.props.quizData[this.state.currentIndex]
+      .incorrect_answers;
+    var shuffled = shuffleAnswers(correct, incorrect);
+    this.setState({ answers: shuffled });
   }
 
   checkAnswer(answer) {
@@ -315,14 +301,12 @@ class Quiz extends Component {
   incrementQuestion(){
     this.setState({ currentIndex: this.state.currentIndex + 1 });
     setTimeout(() => {
-      console.log("In timeout");
       this.componentDidMount();
       this.render();
     }, 500);
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log("Component did update!");
     if (prevProps.data !== this.props.data) {
       console.log(this.props);
     }
