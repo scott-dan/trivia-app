@@ -398,14 +398,6 @@ class Quiz extends Component {
                     </div>
                   </Paper>
                 </Grid>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => {
-                    window.location.assign(`http://localhost:${port}/`)}}
-                  >
-                    Start Again
-                </Button>
               </Grid>
         </div>
       );
