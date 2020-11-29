@@ -59,9 +59,7 @@ class App extends Component {
           </nav>
 
           <Switch>
-            <Route path="/quiz">
-              {<Quiz {...this.state} />}
-            </Route>
+            <Route path="/quiz">{<Quiz {...this.state.value} />}</Route>
             <Route path="/">
               {/*<Home />*/}
               {this.Home()}
@@ -76,7 +74,7 @@ class App extends Component {
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
-        this.setState({ quizData: data.results});
+        this.setState({ quizData: data.results });
         //console.log("if we got here, we're fine", this.state);
       })
       .catch((error) => {
@@ -91,7 +89,7 @@ class App extends Component {
     history.push('/quiz');
   };
   */
-  
+
   /*
   startQuiz(url) {
     //window.location.assign("/quiz");
@@ -212,27 +210,40 @@ class App extends Component {
                 </Paper>
               </Grid>
               <Grid item xs={12}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => { 
+                {/*
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => {
+                      this.fetchQuestions(qURL);
+                      setTimeout(() => {
+                        console.log(this.state);
+                        //window.location.href = "/quiz"
+                      }, 1000);
+                      //console.log(this.state);
+                      //window.location.assign(`http://localhost:${port}/quiz`)
+                      window.location.href = "/quiz";
+                      //window.location.assign(`http://localhost:${port}/quiz`)
+                      //this.startQuiz(quizURL)
+                    }}
+                    //component={Link}
+                    //to="/quiz"
+                  >
+                    Start Quiz!
+                  </Button>
+                  */}
+                <Link
+                  to="/quiz"
+                  onClick={() => {
                     this.fetchQuestions(qURL);
                     setTimeout(() => {
                       console.log(this.state);
                       //window.location.href = "/quiz"
                     }, 1000);
-                    //console.log(this.state);
-                    //window.location.assign(`http://localhost:${port}/quiz`)
-                    //window.location.href = "/quiz"
-                    //window.location.assign(`http://localhost:${port}/quiz`)
-                    //this.startQuiz(quizURL)
-                  }
-                  }
-                  //component={Link}
-                  //to="/quiz"
+                  }}
                 >
                   Start Quiz!
-                </Button>
+                </Link>
               </Grid>
             </Grid>
           </div>
@@ -263,7 +274,18 @@ export default App;
 class Quiz extends Component {
   constructor(props) {
     super(props);
+    console.log("Now in the Quiz class");
     console.log(props);
+
+    var qURL = createURL(
+      baseURL,
+      this.props.slider,
+      this.props.category,
+      this.props.difficulty,
+      this.props.questionType
+    );
+
+    console.log(qURL);
   }
 
   /*
@@ -280,10 +302,10 @@ class Quiz extends Component {
       });
   }
   */
-  
+
   render() {
     return (
-      //this.fetchQuestions(this.props.quizURL),
+      //this.fetchQuestions(qURL),
       <div className="App">
         <header className="App-header">
           <Container className="QContainer" maxWidth="md">
