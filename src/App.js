@@ -291,12 +291,14 @@ class Quiz extends Component {
   }
 
   componentDidMount() {
-    console.log("Component did mount!");
-    var correct = this.props.quizData[this.state.currentIndex].correct_answer;
-    var incorrect = this.props.quizData[this.state.currentIndex]
-      .incorrect_answers;
-    var shuffled = shuffleAnswers(correct, incorrect);
-    this.setState({ answers: shuffled });
+    if(this.indexCheck(this.state.currentIndex) === false){
+      console.log("Component did mount!");
+      var correct = this.props.quizData[this.state.currentIndex].correct_answer;
+      var incorrect = this.props.quizData[this.state.currentIndex]
+        .incorrect_answers;
+      var shuffled = shuffleAnswers(correct, incorrect);
+      this.setState({ answers: shuffled });
+    }
   }
 
   checkAnswer(answer) {
@@ -304,6 +306,13 @@ class Quiz extends Component {
     if (answer === correct) {
       this.setState({ score: this.state.score + 1 });
     }
+    
+    if(this.indexCheck(this.state.currentIndex) === false){
+      this.incrementQuestion();
+    }
+  }
+
+  incrementQuestion(){
     this.setState({ currentIndex: this.state.currentIndex + 1 });
     setTimeout(() => {
       console.log("In timeout");
@@ -316,6 +325,15 @@ class Quiz extends Component {
     console.log("Component did update!");
     if (prevProps.data !== this.props.data) {
       console.log(this.props);
+    }
+  }
+
+  indexCheck(num){
+    if(num === this.props.slider){
+      return true;
+    }
+    else{
+      return false;
     }
   }
 
@@ -335,82 +353,112 @@ class Quiz extends Component {
   */
 
   render() {
-    return (
-      //this.fetchQuestions(this.props.quizURL),
-      <div className="App">
-        <header className="App-header">
-        <h1>
-            Current Question: {this.state.currentIndex + 1}/{this.props.quizData.length}
-          </h1>
-          <Container className="QContainer" maxWidth="md">
-            <Grid container spacing={3}>
-              <Grid item xs={12}>
-                <Paper className="paper">
-                  <div className="QuestionArea">
-                    <Typography variant="h5" component="div">
-                      {this.props.quizData[this.state.currentIndex].question}
-                    </Typography>
-                  </div>
-                </Paper>
-              </Grid>
-              <Grid item xs={6}>
+    var current = this.state.currentIndex;
+    if(this.indexCheck(current)){
+      return (
+        <div className="Go-Home">
+              <Grid container spacing={3}>
+                <Grid item xs={12}>
+                  <Paper className="paper">
+                    <div className="QuestionArea">
+                      <Typography variant="h5" component="div">
+                        <h1>
+                          Final Score: {this.state.score}/{this.props.quizData.length}
+                        </h1>
+                      </Typography>
+                    </div>
+                  </Paper>
+                </Grid>
                 <Button
                   variant="contained"
-                  onClick={() => this.checkAnswer(this.state.answers[0])}
-                >
-                  <div className="Answer1">
-                    <InputLabel htmlFor="grouped-native-select">
-                      {this.state.answers[0]}
-                    </InputLabel>
-                  </div>
+                  color="primary"
+                  onClick={() => {
+                    window.location.assign(`http://localhost:${port}/`)}}
+                  >
+                    Start Again
                 </Button>
               </Grid>
-
-              <Grid item xs={6}>
-                <Button
-                  variant="contained"
-                  onClick={() => this.checkAnswer(this.state.answers[1])}
-                >
-                  <div className="Answer2">
-                    <InputLabel htmlFor="grouped-native-select">
-                      {this.state.answers[1]}
-                    </InputLabel>
-                  </div>
-                </Button>
-              </Grid>
-
-              <Grid item xs={6}>
-                <Button
-                  variant="contained"
-                  onClick={() => this.checkAnswer(this.state.answers[2])}
-                >
-                  <div className="Answer3">
-                    <InputLabel htmlFor="grouped-native-select">
-                      {this.state.answers[2]}
-                    </InputLabel>
-                  </div>
-                </Button>
-              </Grid>
-
-              <Grid item xs={6}>
-                <Button
-                  variant="contained"
-                  onClick={() => this.checkAnswer(this.state.answers[3])}
-                >
-                  <div className="Answer4">
-                    <InputLabel htmlFor="grouped-native-select">
-                      {this.state.answers[3]}
-                    </InputLabel>
-                  </div>
-                </Button>
-              </Grid>
-            </Grid>
-          </Container>
+        </div>
+      );
+    }
+    else{
+      return (
+        //this.fetchQuestions(this.props.quizURL),
+        <div className="App">
+          <header className="App-header">
           <h1>
-            Current Score: {this.state.score}/{this.props.quizData.length}
-          </h1>
-        </header>
-      </div>
-    );
+              Current Question: {this.state.currentIndex + 1}/{this.props.quizData.length}
+            </h1>
+            <Container className="QContainer" maxWidth="md">
+              <Grid container spacing={3}>
+                <Grid item xs={12}>
+                  <Paper className="paper">
+                    <div className="QuestionArea">
+                      <Typography variant="h5" component="div">
+                        {this.props.quizData[this.state.currentIndex].question}
+                      </Typography>
+                    </div>
+                  </Paper>
+                </Grid>
+                <Grid item xs={6}>
+                  <Button
+                    variant="contained"
+                    onClick={() => this.checkAnswer(this.state.answers[0])}
+                  >
+                    <div className="Answer1">
+                      <InputLabel htmlFor="grouped-native-select">
+                        {this.state.answers[0]}
+                      </InputLabel>
+                    </div>
+                  </Button>
+                </Grid>
+
+                <Grid item xs={6}>
+                  <Button
+                    variant="contained"
+                    onClick={() => this.checkAnswer(this.state.answers[1])}
+                  >
+                    <div className="Answer2">
+                      <InputLabel htmlFor="grouped-native-select">
+                        {this.state.answers[1]}
+                      </InputLabel>
+                    </div>
+                  </Button>
+                </Grid>
+
+                <Grid item xs={6}>
+                  <Button
+                    variant="contained"
+                    onClick={() => this.checkAnswer(this.state.answers[2])}
+                  >
+                    <div className="Answer3">
+                      <InputLabel htmlFor="grouped-native-select">
+                        {this.state.answers[2]}
+                      </InputLabel>
+                    </div>
+                  </Button>
+                </Grid>
+
+                <Grid item xs={6}>
+                  <Button
+                    variant="contained"
+                    onClick={() => this.checkAnswer(this.state.answers[3])}
+                  >
+                    <div className="Answer4">
+                      <InputLabel htmlFor="grouped-native-select">
+                        {this.state.answers[3]}
+                      </InputLabel>
+                    </div>
+                  </Button>
+                </Grid>
+              </Grid>
+            </Container>
+            <h1>
+              Current Score: {this.state.score}/{this.props.quizData.length}
+            </h1>
+          </header>
+        </div>
+      );
+    }
   }
 }
