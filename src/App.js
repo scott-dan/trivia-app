@@ -24,49 +24,98 @@ class App extends Component {
       difficulty: "easy",
       questionType: "any",
       quizData: [],
+      showQButton: false,
     };
   }
 
   updateSlider = (event, newSlider) => {
-    this.setState({ slider: newSlider });
+    this.setState({ slider: newSlider, showQButton: false });
   };
 
   updateCategory = (event) => {
-    this.setState({ category: event.target.value });
+    this.setState({ category: event.target.value, showQButton: false });
   };
 
   updateDifficulty = (event) => {
-    this.setState({ difficulty: event.target.value });
+    this.setState({ difficulty: event.target.value, showQButton: false});
   };
 
   updateQuestionType = (event) => {
-    this.setState({ questionType: event.target.value });
+    this.setState({ questionType: event.target.value, showQButton: false });
+  };
+
+  updateShowQButton = () => {
+    this.setState({ showQButton: true });
   };
 
   render() {
-    return (
-      <Router>
-        <div>
-          <nav>
-            <ul>
-              <li>
-                <Link to="/">Question Select</Link>
-              </li>
-              <li>
-                <Link to="/quiz">Go To Quiz</Link>
-              </li>
-            </ul>
-          </nav>
-          <Switch>
-            <Route path="/quiz">{<Quiz {...this.state} />}</Route>
-            <Route path="/">
-              {/*<Home />*/}
-              {this.Home()}
-            </Route>
-          </Switch>
-        </div>
-      </Router>
-    );
+    if(this.state.showQButton){
+      return (
+        <Router>
+          <div className="nav-container">
+            <nav>
+            <Grid container spacing={1}>
+            <Grid item xs={12}>
+              <Link to="/">
+                <Button
+                variant="contained"
+                color="primary"
+                >
+
+                  New Game
+                </Button>
+              </Link>
+            </Grid>
+            <Grid item xs={12}>
+                  <Link to="/quiz">
+                    <Button
+                    variant="contained"
+                    color="secondary"
+                    >
+                      Start Trivia
+                    </Button>
+                  </Link>
+            </Grid>
+            </Grid>
+            </nav>
+            <Switch>
+              <Route path="/quiz">{<Quiz {...this.state} />}</Route>
+              <Route path="/">
+                {/*<Home />*/}
+                {this.Home()}
+              </Route>
+            </Switch>
+          </div>
+        </Router>
+      );
+    }
+    else{
+      return (
+        <Router>
+          <div className="nav-container">
+            <nav>
+            <Grid container spacing={1}>
+            <Grid item xs={12}>
+              <Link to="/">
+                <Button
+                variant="contained"
+                color="primary"
+                >
+                  New Game
+                </Button>
+              </Link>
+            </Grid>
+            </Grid>
+            </nav>
+              <Route path="/">
+                {/*<Home />*/}
+                {this.Home()}
+              </Route>
+          </div>
+        </Router>
+      );
+
+    }
   }
 
   fetchQuestions(url) {
@@ -202,10 +251,14 @@ class App extends Component {
                     setTimeout(() => {
                       console.log(this.state);
                     }, 1000);
+                    this.updateShowQButton();
                   }}
                 >
                   Retrive Questions!
                 </Button>
+              </Grid>
+              
+              <Grid item xs={12}>
               </Grid>
             </Grid>
           </div>
