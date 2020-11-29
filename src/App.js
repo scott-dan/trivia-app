@@ -59,9 +59,7 @@ class App extends Component {
           </nav>
 
           <Switch>
-            <Route path="/quiz">
-              {<Quiz {...this.state} />}
-            </Route>
+            <Route path="/quiz">{<Quiz {...this.state} />}</Route>
             <Route path="/">
               {/*<Home />*/}
               {this.Home()}
@@ -76,7 +74,7 @@ class App extends Component {
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
-        this.setState({ quizData: data.results});
+        this.setState({ quizData: data.results });
         //console.log("if we got here, we're fine", this.state);
       })
       .catch((error) => {
@@ -91,7 +89,7 @@ class App extends Component {
     history.push('/quiz');
   };
   */
-  
+
   /*
   startQuiz(url) {
     //window.location.assign("/quiz");
@@ -215,7 +213,7 @@ class App extends Component {
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={() => { 
+                  onClick={() => {
                     this.fetchQuestions(qURL);
                     setTimeout(() => {
                       console.log(this.state);
@@ -226,8 +224,7 @@ class App extends Component {
                     //window.location.href = "/quiz"
                     //window.location.assign(`http://localhost:${port}/quiz`)
                     //this.startQuiz(quizURL)
-                  }
-                  }
+                  }}
                   //component={Link}
                   //to="/quiz"
                 >
@@ -290,29 +287,31 @@ class Quiz extends Component {
       answers: [],
       score: 0,
       currentIndex: 0,
-    }
+    };
   }
 
   componentDidMount() {
     console.log("Component did mount!");
     var correct = this.props.quizData[this.state.currentIndex].correct_answer;
-    var incorrect = this.props.quizData[this.state.currentIndex].incorrect_answers;
+    var incorrect = this.props.quizData[this.state.currentIndex]
+      .incorrect_answers;
     var shuffled = shuffleAnswers(correct, incorrect);
-    this.setState({ answers: shuffled});
+    this.setState({ answers: shuffled });
   }
 
   checkAnswer(answer) {
     var correct = this.props.quizData[this.state.currentIndex].correct_answer;
-    if(answer === correct) {
-      this.setState({score: this.state.score + 1});
+    if (answer === correct) {
+      this.setState({ score: this.state.score + 1 });
     }
-    this.setState({currentIndex: this.state.currentIndex + 1});
+    this.setState({ currentIndex: this.state.currentIndex + 1 });
+    this.componentDidMount();
     this.render();
   }
 
   componentDidUpdate(prevProps, prevState) {
     console.log("Component did update!");
-    if(prevProps.data !== this.props.data){
+    if (prevProps.data !== this.props.data) {
       console.log(this.props);
     }
   }
@@ -331,7 +330,7 @@ class Quiz extends Component {
       });
   }
   */
-  
+
   render() {
     return (
       //this.fetchQuestions(this.props.quizURL),
@@ -349,7 +348,10 @@ class Quiz extends Component {
                 </Paper>
               </Grid>
               <Grid item xs={6}>
-                <Button variant="contained" onClick={() => this.checkAnswer(this.state.answers[0])}>
+                <Button
+                  variant="contained"
+                  onClick={() => this.checkAnswer(this.state.answers[0])}
+                >
                   <div className="Answer1">
                     <InputLabel htmlFor="grouped-native-select">
                       {this.state.answers[0]}
@@ -361,12 +363,11 @@ class Quiz extends Component {
               <Grid item xs={6}>
                 <Button
                   variant="contained"
-                  // color="primary"
-                  //onClick={() => (window.location.href = "questions.html")}
+                  onClick={() => this.checkAnswer(this.state.answers[0])}
                 >
                   <div className="Answer2">
                     <InputLabel htmlFor="grouped-native-select">
-                    {this.state.answers[1]}
+                      {this.state.answers[1]}
                     </InputLabel>
                   </div>
                 </Button>
@@ -375,12 +376,11 @@ class Quiz extends Component {
               <Grid item xs={6}>
                 <Button
                   variant="contained"
-                  // color="primary"
-                  //onClick={() => (window.location.href = "questions.html")}
+                  onClick={() => this.checkAnswer(this.state.answers[0])}
                 >
                   <div className="Answer3">
                     <InputLabel htmlFor="grouped-native-select">
-                    {this.state.answers[2]}
+                      {this.state.answers[2]}
                     </InputLabel>
                   </div>
                 </Button>
@@ -389,12 +389,11 @@ class Quiz extends Component {
               <Grid item xs={6}>
                 <Button
                   variant="contained"
-                  // color="primary"
-                  //onClick={() => (window.location.href = "questions.html")}
+                  onClick={() => this.checkAnswer(this.state.answers[0])}
                 >
                   <div className="Answer4">
                     <InputLabel htmlFor="grouped-native-select">
-                    {this.state.answers[3]}
+                      {this.state.answers[3]}
                     </InputLabel>
                   </div>
                 </Button>
@@ -406,52 +405,3 @@ class Quiz extends Component {
     );
   }
 }
-
-/*
-function fetchQuestions(url) {
-  fetch(url)
-    .then((response) => response.json())
-    .then((questions) => {
-      this.setState({ jsondata: questions.results });
-      QuizData = questions.results;
-      console.log(QuizData);
-      console.log(QuizData.length);
-    })
-    .catch((error) => {
-      console.log("Request Failed", error);
-      //NEED TO ADD SOME SORT OF OUTPUT HERE FOR DIFFERENT RESPONSE CODES
-    });
-}
-
-function createListItem(data) {
-  var str =
-    "<li>" +
-    data.question +
-    "<br>" +
-    shuffleAnswers(data.correct_answer, data.incorrect_answers) +
-    "</li>";
-  return str;
-}
-
-function shuffleAnswers(correct_answer, incorrect_answers) {
-  var oldArr = correct_answer + "," + incorrect_answers;
-  //console.log(oldArr);
-  oldArr = oldArr.split(",");
-  //console.log(oldArr);
-  var newArr = [];
-  for (let i in oldArr) {
-    var j = getRandomInt(oldArr.length);
-    while (newArr[j] != null) {
-      j++;
-      j = j % 4;
-      //console.log(j);
-    }
-    newArr[j] = oldArr[i];
-  }
-  return newArr;
-}
-
-function getRandomInt(max) {
-  return Math.floor(Math.random() * Math.floor(max));
-}
-*/
