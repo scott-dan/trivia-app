@@ -60,9 +60,7 @@ class App extends Component {
           </nav>
 
           <Switch>
-            <Route path="/quiz">
-              {<Quiz {...this.state} />}
-            </Route>
+            <Route path="/quiz">{<Quiz {...this.state.value} />}</Route>
             <Route path="/">
               {/*<Home />*/}
               {this.Home()}
@@ -77,7 +75,7 @@ class App extends Component {
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
-        this.setState({ quizData: data.results});
+        this.setState({ quizData: data.results });
         //console.log("if we got here, we're fine", this.state);
       })
       .catch((error) => {
@@ -102,21 +100,6 @@ class App extends Component {
 
   }
 
-  createURL(base, count, category, difficulty, type) {
-    var apiURL = base;
-
-    apiURL += "amount=" + count;
-    if (category !== "any") {
-      apiURL += "&category=" + category;
-    }
-    if (difficulty !== "any") {
-      apiURL += "&difficulty=" + difficulty;
-    }
-    if (type !== "any") {
-      apiURL += "&type=" + type;
-    }
-    return apiURL;
-  }
 
   /*
   startQuiz = () => {
@@ -124,7 +107,7 @@ class App extends Component {
     history.push('/quiz');
   };
   */
-  
+
   /*
   startQuiz(url) {
     //window.location.assign("/quiz");
@@ -134,7 +117,7 @@ class App extends Component {
   */
 
   Home() {
-    var qURL = this.createURL(
+    var qURL = createURL(
       baseURL,
       this.state.slider,
       this.state.category,
@@ -277,7 +260,18 @@ export default withRouter(App);
 class Quiz extends Component {
   constructor(props) {
     super(props);
+    console.log("Now in the Quiz class");
     console.log(props);
+
+    var qURL = createURL(
+      baseURL,
+      this.props.slider,
+      this.props.category,
+      this.props.difficulty,
+      this.props.questionType
+    );
+
+    console.log(qURL);
   }
 
   /*
@@ -294,10 +288,10 @@ class Quiz extends Component {
       });
   }
   */
-  
+
   render() {
     return (
-      //this.fetchQuestions(this.props.quizURL),
+      //this.fetchQuestions(qURL),
       <div className="App">
         <header className="App-header">
           <Container className="QContainer" maxWidth="md">
@@ -370,6 +364,21 @@ class Quiz extends Component {
       </div>
     );
   }
+}
+function createURL(base, count, category, difficulty, type) {
+  var apiURL = base;
+
+  apiURL += "amount=" + count;
+  if (category !== "any") {
+    apiURL += "&category=" + category;
+  }
+  if (difficulty !== "any") {
+    apiURL += "&difficulty=" + difficulty;
+  }
+  if (type !== "any") {
+    apiURL += "&type=" + type;
+  }
+  return apiURL;
 }
 
 /*
