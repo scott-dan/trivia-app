@@ -57,7 +57,6 @@ class App extends Component {
               </li>
             </ul>
           </nav>
-
           <Switch>
             <Route path="/quiz">{<Quiz {...this.state} />}</Route>
             <Route path="/">
@@ -109,17 +108,18 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
+          {/*
           <img
             src="http://www.pngmart.com/files/8/Colorful-Smoke-Transparent-Background.png"
             className="App-logo"
             alt="logo"
           />
+          */}
           <Container maxWidth="sm">
             <Box my={3}>
               <Typography variant="h4" component="h1" gutterBottom>
                 Welcome to The Trivia App!
               </Typography>
-              <p>{qURL}</p>
             </Box>
           </Container>
           <div className="input">
@@ -215,9 +215,9 @@ class App extends Component {
                   color="primary"
                   onClick={() => {
                     this.fetchQuestions(qURL);
+                    console.log(qURL);
                     setTimeout(() => {
                       console.log(this.state);
-                      //window.location.href = "/quiz"
                     }, 1000);
                     //console.log(this.state);
                     //window.location.assign(`http://localhost:${port}/quiz`)
@@ -305,8 +305,11 @@ class Quiz extends Component {
       this.setState({ score: this.state.score + 1 });
     }
     this.setState({ currentIndex: this.state.currentIndex + 1 });
-    this.componentDidMount();
-    this.render();
+    setTimeout(() => {
+      console.log("In timeout");
+      this.componentDidMount();
+      this.render();
+    }, 500);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -336,6 +339,9 @@ class Quiz extends Component {
       //this.fetchQuestions(this.props.quizURL),
       <div className="App">
         <header className="App-header">
+        <h1>
+            Current Question: {this.state.currentIndex + 1}/{this.props.quizData.length}
+          </h1>
           <Container className="QContainer" maxWidth="md">
             <Grid container spacing={3}>
               <Grid item xs={12}>
@@ -363,7 +369,7 @@ class Quiz extends Component {
               <Grid item xs={6}>
                 <Button
                   variant="contained"
-                  onClick={() => this.checkAnswer(this.state.answers[0])}
+                  onClick={() => this.checkAnswer(this.state.answers[1])}
                 >
                   <div className="Answer2">
                     <InputLabel htmlFor="grouped-native-select">
@@ -376,7 +382,7 @@ class Quiz extends Component {
               <Grid item xs={6}>
                 <Button
                   variant="contained"
-                  onClick={() => this.checkAnswer(this.state.answers[0])}
+                  onClick={() => this.checkAnswer(this.state.answers[2])}
                 >
                   <div className="Answer3">
                     <InputLabel htmlFor="grouped-native-select">
@@ -389,7 +395,7 @@ class Quiz extends Component {
               <Grid item xs={6}>
                 <Button
                   variant="contained"
-                  onClick={() => this.checkAnswer(this.state.answers[0])}
+                  onClick={() => this.checkAnswer(this.state.answers[3])}
                 >
                   <div className="Answer4">
                     <InputLabel htmlFor="grouped-native-select">
@@ -400,6 +406,9 @@ class Quiz extends Component {
               </Grid>
             </Grid>
           </Container>
+          <h1>
+            Current Score: {this.state.score}/{this.props.quizData.length}
+          </h1>
         </header>
       </div>
     );
