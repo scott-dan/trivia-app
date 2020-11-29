@@ -11,8 +11,6 @@ import FormLabel from "@material-ui/core/FormLabel";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-
-const port = process.env.PORT || 3000;
 const baseURL = "https://opentdb.com/api.php?";
 
 class App extends Component {
@@ -37,7 +35,7 @@ class App extends Component {
   };
 
   updateDifficulty = (event) => {
-    this.setState({ difficulty: event.target.value, showQButton: false});
+    this.setState({ difficulty: event.target.value, showQButton: false });
   };
 
   updateQuestionType = (event) => {
@@ -49,38 +47,32 @@ class App extends Component {
   };
 
   render() {
-    if(this.state.showQButton){
+    if (this.state.showQButton) {
       return (
         <Router>
           <div className="nav-container">
             <nav>
-            <Grid container
-              direction="row"
-              justify="space-between"
-              alignItems="center"
-            >
-            <Grid item xs={9}>
-              <Link to="/">
-                <Button
-                variant="contained"
-                color="primary"
-                >
-
-                  New Game
-                </Button>
-              </Link>
-            </Grid>
-            <Grid item xs={3}>
+              <Grid
+                container
+                direction="row"
+                justify="space-between"
+                alignItems="center"
+              >
+                <Grid item xs={9}>
+                  <Link to="/">
+                    <Button variant="contained" color="primary">
+                      New Game
+                    </Button>
+                  </Link>
+                </Grid>
+                <Grid item xs={3}>
                   <Link to="/quiz">
-                    <Button
-                    variant="contained"
-                    color="secondary"
-                    >
+                    <Button variant="contained" color="secondary">
                       Start Trivia
                     </Button>
                   </Link>
-            </Grid>
-            </Grid>
+                </Grid>
+              </Grid>
             </nav>
             <Switch>
               <Route path="/quiz">{<Quiz {...this.state} />}</Route>
@@ -92,33 +84,28 @@ class App extends Component {
           </div>
         </Router>
       );
-    }
-    else{
+    } else {
       return (
         <Router>
           <div className="nav-container">
             <nav>
-            <Grid container spacing={1}>
-            <Grid item xs={12}>
-              <Link to="/">
-                <Button
-                variant="contained"
-                color="primary"
-                >
-                  New Game
-                </Button>
-              </Link>
-            </Grid>
-            </Grid>
+              <Grid container spacing={1}>
+                <Grid item xs={12}>
+                  <Link to="/">
+                    <Button variant="contained" color="primary">
+                      New Game
+                    </Button>
+                  </Link>
+                </Grid>
+              </Grid>
             </nav>
-              <Route path="/">
-                {/*<Home />*/}
-                {this.Home()}
-              </Route>
+            <Route path="/">
+              {/*<Home />*/}
+              {this.Home()}
+            </Route>
           </div>
         </Router>
       );
-
     }
   }
 
@@ -126,12 +113,34 @@ class App extends Component {
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
-        this.setState({ quizData: data.results });
-        //console.log("if we got here, we're fine", this.state);
+        switch (data.response_code) {
+          case 0:
+            console.log("Success", data);
+            this.setState({ quizData: data.results });
+            break;
+          case 1:
+            alert(
+              "The API doesn't have enough questions for your query. (Ex. Asking for 50 Questions in a Category that only has 20.)"
+            );
+            throw new Error("Could not return results.");
+          case 2:
+            alert("Arguements passed in aren't valid. (Ex. Amount = Five)");
+            throw new Error("Query contains an invalid parameter.");
+          case 3:
+            alert("Session Token does not exist.");
+            throw new Error("Session Token does not exist.");
+          case 4:
+            alert(
+              "Session Token has returned all possible questions for the specified query. Resetting the Token is necessary."
+            );
+            throw new Error(
+              "Session Token has returned all possible questions for the specified query. Resetting the Token is necessary."
+            );
+          default:
+        }
       })
       .catch((error) => {
         console.log("Request Failed", error);
-        //NEED TO ADD SOME SORT OF OUTPUT HERE FOR DIFFERENT RESPONSE CODES
       });
   }
 
@@ -192,7 +201,15 @@ class App extends Component {
                     <option value="">Any</option>
                     <optgroup label="General">
                       <option value="9">General Knowledge</option>
+                      <option value="20">Mythology</option>
+                      <option value="21">Sports</option>
+                      <option value="22">Geography</option>
+                      <option value="23">History</option>
+                      <option value="24">Politics</option>
                       <option value="25">Art</option>
+
+                      <option value="27">Animals</option>
+                      <option value="28">Vehicles</option>
                     </optgroup>
 
                     <optgroup label="Entertainment">
@@ -203,12 +220,17 @@ class App extends Component {
                       <option value="14">Television</option>
                       <option value="15">Video Games</option>
                       <option value="16">Board Games</option>
+                      <option value="26">Celebrities</option>
+                      <option value="29">Comics</option>
+                      <option value="31">Anime & Manga</option>
+                      <option value="32">Cartoons</option>
                     </optgroup>
 
                     <optgroup label="Science">
                       <option value="17">Nature</option>
                       <option value="18">Computers</option>
                       <option value="19">Mathematics</option>
+                      <option value="30">Gadgets</option>
                     </optgroup>
                   </Select>
                 </Paper>
@@ -257,11 +279,11 @@ class App extends Component {
                     }, 1000);
                     this.updateShowQButton();
                   }}
-                >                    
-                Create Trivia Game
+                >
+                  Create Trivia Game
                 </Button>
               </Grid>
-              </Grid>
+            </Grid>
           </div>
         </header>
       </div>
@@ -297,7 +319,7 @@ function shuffleAnswers(correct_answer, incorrect_answers) {
     var j = getRandomInt(oldArr.length);
     while (newArr[j] != null) {
       j++;
-      j = j % 4;
+      j = j % oldArr.length;
       //console.log(j);
     }
     newArr[j] = oldArr[i];
@@ -321,7 +343,7 @@ class Quiz extends Component {
   }
 
   componentDidMount() {
-    if(this.indexCheck(this.state.currentIndex) === false){
+    if (this.indexCheck(this.state.currentIndex) === false) {
       console.log("Component did mount!");
       var correct = this.props.quizData[this.state.currentIndex].correct_answer;
       var incorrect = this.props.quizData[this.state.currentIndex]
@@ -335,7 +357,7 @@ class Quiz extends Component {
   buildAnswerArray() {
     var correct = this.props.quizData[this.state.currentIndex].correct_answer;
     var incorrect = this.props.quizData[this.state.currentIndex]
-      .incorrect_answers;
+      .incorrect_answers;  
     var shuffled = shuffleAnswers(correct, incorrect);
     this.setState({ answers: shuffled });
   }
@@ -345,13 +367,13 @@ class Quiz extends Component {
     if (answer === correct) {
       this.setState({ score: this.state.score + 1 });
     }
-    
-    if(this.indexCheck(this.state.currentIndex) === false){
+
+    if (this.indexCheck(this.state.currentIndex) === false) {
       this.incrementQuestion();
     }
   }
 
-  incrementQuestion(){
+  incrementQuestion() {
     this.setState({ currentIndex: this.state.currentIndex + 1 });
     setTimeout(() => {
       this.componentDidMount();
@@ -365,51 +387,59 @@ class Quiz extends Component {
     }
   }
 
-  indexCheck(num){
-    if(num === this.props.slider){
+  indexCheck(num) {
+    if (num === this.props.slider) {
       return true;
-    }
-    else{
+    } else {
       return false;
     }
   }
 
-  checkQType(type){
-    if(type !== "boolean")
-      return true;
-    else
-      return false;
+  checkQType(type) {
+    if (type !== "boolean") return true;
+    else return false;
+  }
+
+  scrubQuestion(string) {
+    var q = string;
+    q =  q.replaceAll("&#039;", "'");
+    q =  q.replaceAll("&quot;", "\"");
+    q =  q.replaceAll("&amp;", "&");
+    q =  q.replaceAll("&Umml", "Ü");
+    q =  q.replaceAll("&rsquo;", "'");
+    return q;
   }
 
   render() {
     var current = this.state.currentIndex;
-    if(this.indexCheck(current)){
+    if (this.indexCheck(current)) {
       return (
         <div className="Go-Home">
-              <Grid container spacing={3}>
-                <Grid item xs={12}>
-                  <Paper className="paper">
-                    <div className="QuestionArea">
-                      <Typography variant="h5" component="div">
-                        <h1>
-                          Final Score: {this.state.score}/{this.props.quizData.length}
-                        </h1>
-                      </Typography>
-                    </div>
-                  </Paper>
-                </Grid>
-              </Grid>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <Paper className="paper">
+                <div className="QuestionArea">
+                  <Typography variant="h5" component="div">
+                    <h1>
+                      Final Score: {this.state.score}/
+                      {this.props.quizData.length}
+                    </h1>
+                  </Typography>
+                </div>
+              </Paper>
+            </Grid>
+          </Grid>
         </div>
       );
-    }
-    else{
+    } else {
       var qType = this.props.quizData[this.state.currentIndex].type;
-      if(this.checkQType(qType)){
+      if (this.checkQType(qType)) {
         return (
           <div className="App">
             <header className="App-header">
-            <h1>
-                Current Question: {this.state.currentIndex + 1}/{this.props.quizData.length}
+              <h1>
+                Current Question: {this.state.currentIndex + 1}/
+                {this.props.quizData.length}
               </h1>
               <Container className="QContainer" maxWidth="md">
                 <Grid container spacing={3}>
@@ -417,7 +447,10 @@ class Quiz extends Component {
                     <Paper className="paper">
                       <div className="QuestionArea">
                         <Typography variant="h5" component="div">
-                          {this.props.quizData[this.state.currentIndex].question}
+                          {
+                            this.scrubQuestion(this.props.quizData[this.state.currentIndex]
+                              .question)
+                          }
                         </Typography>
                       </div>
                     </Paper>
@@ -481,13 +514,13 @@ class Quiz extends Component {
             </header>
           </div>
         );
-      }
-      else{
+      } else {
         return (
           <div className="App">
             <header className="App-header">
-            <h1>
-                Current Question: {this.state.currentIndex + 1}/{this.props.quizData.length}
+              <h1>
+                Current Question: {this.state.currentIndex + 1}/
+                {this.props.quizData.length}
               </h1>
               <Container className="QContainer" maxWidth="md">
                 <Grid container spacing={3}>
@@ -495,7 +528,10 @@ class Quiz extends Component {
                     <Paper className="paper">
                       <div className="QuestionArea">
                         <Typography variant="h5" component="div">
-                          {this.props.quizData[this.state.currentIndex].question}
+                          {
+                            this.scrubQuestion(this.props.quizData[this.state.currentIndex]
+                              .question)
+                          }
                         </Typography>
                       </div>
                     </Paper>
@@ -525,8 +561,8 @@ class Quiz extends Component {
                       </div>
                     </Button>
                   </Grid>
-                  </Grid>
-                  </Container>
+                </Grid>
+              </Container>
               <h1>
                 Current Score: {this.state.score}/{this.props.quizData.length}
               </h1>
