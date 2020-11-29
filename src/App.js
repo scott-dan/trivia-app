@@ -284,13 +284,15 @@ class Quiz extends Component {
     if (answer === correct) {
       this.setState({ score: this.state.score + 1 });
     }
-    if (this.state.currentIndex <= this.props.quizData.length) {
+    if (this.state.currentIndex === this.props.quizData.length - 1) {
+      alert("You have reached the end of the quiz!");
+    } else {
       this.setState({ currentIndex: this.state.currentIndex + 1 });
+      setTimeout(() => {
+        this.componentDidMount();
+        this.render();
+      }, 500);
     }
-    setTimeout(() => {
-      this.componentDidMount();
-      this.render();
-    }, 500);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -298,21 +300,6 @@ class Quiz extends Component {
       console.log(this.props);
     }
   }
-
-  /*
-  fetchQuestions(url) {
-    fetch(url)
-      .then((response) => response.json())
-      .then((questions) => {
-        this.props.setState({ data: questions.results });
-        console.log(this.props.data);
-      })
-      .catch((error) => {
-        console.log("Request Failed", error);
-        //NEED TO ADD SOME SORT OF OUTPUT HERE FOR DIFFERENT RESPONSE CODES
-      });
-  }
-  */
 
   render() {
     return (
