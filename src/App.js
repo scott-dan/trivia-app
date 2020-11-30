@@ -69,15 +69,17 @@ class App extends Component {
                     </Button>
                   </Link>
                 </Grid>
-                <Grid item xs={3}>
+              </Grid>
+            </nav>
+            <section class="grid-container">
+            <div className="gridItem">
                   <Link to="/quiz">
                     <Button variant="contained" color="secondary">
                       Start Trivia
                     </Button>
                   </Link>
-                </Grid>
-              </Grid>
-            </nav>
+            </div>
+            </section>
             <Switch>
               <Route path="/quiz">{<Quiz {...this.state} />}</Route>
               <Route path="/">

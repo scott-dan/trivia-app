@@ -118,3 +118,18 @@
 .input {
   flex-grow: 1;
 }
+
+.gridItem {
+  margin: 5px 0px;
+  grid-column: span 0/4;
+  grid-row: span 1;
+}
+
+/* Add your code here */
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-template-rows: repeat(1, 1fr);
+  height: 4vh;
+}
