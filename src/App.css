@@ -10,14 +10,17 @@
 .Score {
   border: 2px solid white;
   border-radius: 5px;
-  padding: 20px;
+  padding: 30px 20px;
+  background-color: #5ac7e8;
+  margin: 50px;
 }
 
 .Score-tf {
   border: 2px solid white;
   border-radius: 5px;
-  margin: 60px;
+  margin: 90px;
   padding: 0px 20px;
+  background-color: #5ac7e8;
 }
 
 @media (prefers-reduced-motion: no-preference) {

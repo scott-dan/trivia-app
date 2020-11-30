@@ -233,9 +233,9 @@ class Quiz extends Component {
                       </Grid>
                     </Container>
                     <div className="Score">
-                    <h1>
+                    <p>
                       Score: {this.state.score}/{this.props.quizData.length}
-                    </h1>
+                    </p>
                     </div>
                   </header>
                 </div>
@@ -294,9 +294,9 @@ class Quiz extends Component {
                       </Grid>
                     </Container>
                     <div className="Score-tf">
-                    <h1>
+                    <p>
                       Score: {this.state.score}/{this.props.quizData.length}
-                    </h1>
+                    </p>
                     </div>
                   </header>
                 </div>
@@ -383,11 +383,11 @@ class Quiz extends Component {
                       </Grid>
                     </Grid>
                   </Container>
-                  <h1>
+                  <p>
                     <div className="Score">
                     Score: {this.state.score}/{this.props.quizData.length}
                     </div>
-                  </h1>
+                  </p>
                 </header>
               </div>
             );
@@ -445,9 +445,9 @@ class Quiz extends Component {
                     </Grid>
                   </Container>
                     <div className="Score-tf">
-                  <h1>
+                  <p>
                     Score: {this.state.score}/{this.props.quizData.length}
-                  </h1>
+                  </p>
                   </div>
                 </header>
               </div>
