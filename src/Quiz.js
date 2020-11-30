@@ -1,17 +1,11 @@
 import "./App.css";
-import App from "./App"
 import React, { Component } from "react";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
-import Select from "@material-ui/core/Select";
-import Slider from "@material-ui/core/Slider";
 import InputLabel from "@material-ui/core/InputLabel";
-import FormLabel from "@material-ui/core/FormLabel";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 class Quiz extends Component {
   constructor(props) {
@@ -133,9 +127,10 @@ class Quiz extends Component {
     if(this.indexCheck(current)){
       return (
         <div className="Go-Home">
+          <Container className="GoHome-container">
           <Grid container spacing={3}>
             <Grid item xs={12}>
-              <Paper className="paper">
+              <Paper className="paper" elevation={4}>
                 <div className="QuestionArea">
                   <Typography variant="h5" component="div">
                     <h1>
@@ -147,6 +142,7 @@ class Quiz extends Component {
               </Paper>
             </Grid>
           </Grid>
+          </Container>
         </div>
       );
     }
@@ -171,7 +167,7 @@ class Quiz extends Component {
                     <Container className="QContainer-Sports" maxWidth="md">
                       <Grid container spacing={3}>
                         <Grid item xs={12}>
-                          <Paper className="paper">
+                          <Paper className="paper-sports" elevation={4}>
                             <div className="QuestionArea-Sports">
                               <Typography variant="h5" component="div">
                                 {
@@ -236,9 +232,11 @@ class Quiz extends Component {
                         </Grid>
                       </Grid>
                     </Container>
+                    <div className="Score">
                     <h1>
-                      Current Score: {this.state.score}/{this.props.quizData.length}
+                      Score: {this.state.score}/{this.props.quizData.length}
                     </h1>
+                    </div>
                   </header>
                 </div>
               );
@@ -257,7 +255,7 @@ class Quiz extends Component {
                     <Container className="QContainer-Sports" maxWidth="md">
                       <Grid container spacing={3}>
                         <Grid item xs={12}>
-                          <Paper className="paper">
+                          <Paper className="paper-sports" elevation={4}>
                             <div className="QuestionArea-Sports">
                               <Typography variant="h5" component="div">
                                 {
@@ -295,14 +293,15 @@ class Quiz extends Component {
                         </Grid>
                       </Grid>
                     </Container>
+                    <div className="Score-tf">
                     <h1>
-                      Current Score: {this.state.score}/{this.props.quizData.length}
+                      Score: {this.state.score}/{this.props.quizData.length}
                     </h1>
+                    </div>
                   </header>
                 </div>
               );
             }
-          break;
 
         default:
           var qType = this.props.quizData[this.state.currentIndex].type;
@@ -385,7 +384,9 @@ class Quiz extends Component {
                     </Grid>
                   </Container>
                   <h1>
-                    Current Score: {this.state.score}/{this.props.quizData.length}
+                    <div className="Score">
+                    Score: {this.state.score}/{this.props.quizData.length}
+                    </div>
                   </h1>
                 </header>
               </div>
@@ -443,9 +444,11 @@ class Quiz extends Component {
                       </Grid>
                     </Grid>
                   </Container>
+                    <div className="Score-tf">
                   <h1>
-                    Current Score: {this.state.score}/{this.props.quizData.length}
+                    Score: {this.state.score}/{this.props.quizData.length}
                   </h1>
+                  </div>
                 </header>
               </div>
             );
